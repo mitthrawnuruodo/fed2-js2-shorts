@@ -136,7 +136,7 @@ function getData(url) {
 ```
 5. Finally, the request is sent.
 
-6. Then you use it like this to get to the data:
+Then you use it like this to get to the data:
 ```js
 getData("https://jsonplaceholder.typicode.com/todos/3")
   .then(data => console.log("Data:", data))
