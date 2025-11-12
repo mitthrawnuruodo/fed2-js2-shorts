@@ -70,7 +70,7 @@ Explanation:
 
 Instead of nesting callbacks inside `onreadystatechange`, we can wrap the XHR logic inside a Promise.
 
-That way, we can use `.then()` and `.catch()` just like with modern `fetch()`.
+That way, we can use `.then()` and `.catch()` just like with modern `fetch()`:
 
 ```js
 function getData(url) {
@@ -136,14 +136,12 @@ function getData(url) {
 ```
 5. Finally, the request is sent.
 
-Then you use it like this:
+6. Then you use it like this to get to the data:
 ```js
 getData("https://jsonplaceholder.typicode.com/todos/3")
   .then(data => console.log("Data:", data))
   .catch(err => console.error(err));
 ```
-
-[See it live here.](https://codepen.io/xiaolasse/pen/QwNbrQX?editors=0012)
 
 ### Sidnote: Why we don’t need `readyState` anymore:
 In older XHR code, people used `xhr.onreadystatechange` and checked `xhr.readyState === 4` to know when the request had finished.
@@ -156,19 +154,24 @@ So `readyState` is redundant here: `onload` already means “we’re done, and h
 * It’s minimal and easy to read.
 * It returns actual data, not raw text.
 * It gracefully handles both HTTP errors and network errors.
-* And, because it’s Promise-based, you can chain it or use `await` in an `async` function:
+* And, because it’s Promise-based, you can chain it *or* use `await` in an `async` function:
 ```js
-async function example() {
+async function fetchData(url) {
   try {
-    const data = await getData("https://jsonplaceholder.typicode.com/todos/1");
-    console.log("Data:", data);
+    const data = await getData(url);
+    console.log("Data (async):", data);
   } catch (err) {
     console.error(err);
   }
 }
+// Call the function
+fetchData("https://jsonplaceholder.typicode.com/todos/1");
 ```
 
 So this version is now essentially a modern, Promise-wrapped XHR — simple, readable, and solid.
+
+[See it live here, with both chained and `async` usage.](https://codepen.io/xiaolasse/pen/QwNbrQX?editors=0012)
+
 
 ## So, as promised (pun intended) some Amiibos
 
