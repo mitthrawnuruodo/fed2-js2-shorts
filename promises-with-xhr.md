@@ -332,7 +332,7 @@ we need to “drill into” the object to reach the array first:
   data.amiibo.forEach(item => { ... };
 ```
 
-There is - at the time of writing - **929** Amiibos in the Amiibo API, and to reduce the list we've filtered the search and only included the character `Luigi` (and - for some reason - `Waluigi`, probably since `Luigi` is a substring of `Waluigi`, since we don't get `Wario` when searching for the character `Mario`.)
+There is - at the time of writing - **929** Amiibos in the Amiibo API, and to reduce the list we've filtered the search, to simplify the example output, and only included the character `Luigi` (and - for some reason - `Waluigi`; probably since `Luigi` is a substring of `Waluigi`, since we don't get `Wario` when searching for the character `Mario`.)
 
 To get the characters you want, refer to the AmiiboAPI Documentation https://www.amiiboapi.com/docs/
 
