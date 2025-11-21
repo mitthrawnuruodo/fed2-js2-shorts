@@ -6,12 +6,14 @@ This short lesson walks you through the essentials of testing JavaScript with Je
 
 ## Installing and Running Jest
 You can add Jest to any JavaScript project — whether you’re starting fresh or upgrading an existing codebase.
-### 1. Install Jest
+
+**1. Install Jest**
 ```js
 npm install --save-dev jest
 ```
 This adds Jest as a development dependency. It works the same way whether your project is brand new or has been around for years.
-### 2. Add a Test Script
+
+**2. Add a Test Script**
 Open your package.json and add a test command:
 ```json
 {
@@ -21,7 +23,8 @@ Open your package.json and add a test command:
 }
 ```
 If the file already has a scripts section, just add the test line.
-### 3. Create Your First Test File
+
+**3. Create Your First Test File**
 Jest automatically runs any file that ends with `.test.js` or `.spec.js`.
 
 You can create a folder called `tests/` or keep test files next to the code — both approaches work.
@@ -31,7 +34,7 @@ Example:
 add.js
 add.test.js
 ```
-### 4. Run Jest
+**4. Run Jest**
 ```sh
 npm test
 ```
