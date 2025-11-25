@@ -1,5 +1,9 @@
 # Building a Single Page Application with Vanilla JavaScript
 
+<div style="color: red; background: beige;">
+NOTE! This is a work in progress and will not work properly at the moment!
+</div>
+
 ## Introduction
 
 A Single Page Application (SPA) is a web application that loads a single HTML page and dynamically updates content as the user interacts with the app, without requiring full page reloads. This creates a smoother, more app-like experience.
