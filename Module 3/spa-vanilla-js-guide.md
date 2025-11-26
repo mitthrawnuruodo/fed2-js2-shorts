@@ -1,14 +1,10 @@
 # Building a Single Page Application with Vanilla JavaScript
 
-<div style="color: red; background: beige;">
-NOTE! This is a work in progress and will not work properly at the moment!
-</div>
-
 ## Introduction
 
 A Single Page Application (SPA) is a web application that loads a single HTML page and dynamically updates content as the user interacts with the app, without requiring full page reloads. This creates a smoother, more app-like experience.
 
-In this tutorial, we'll build a simple SPA with three pages: Home, About, and Contact. We'll cover routing, dynamic content loading, and browser history management.
+In this tutorial, we'll build a simple SPA with multiple pages: Home, About, Users (with a list), User Profile (with dynamic routing), Contact, and a 404 page. We'll cover routing, dynamic content loading, and browser history management.
 
 ---
 
@@ -29,6 +25,7 @@ First, create an `index.html` file with a basic structure:
     <nav>
         <a href="/" data-link>Home</a>
         <a href="/about" data-link>About</a>
+        <a href="/users" data-link>Users</a>
         <a href="/contact" data-link>Contact</a>
     </nav>
     
@@ -86,6 +83,40 @@ nav a:hover {
     max-width: 800px;
     margin: 0 auto;
 }
+
+.users-list {
+    list-style: none;
+    padding: 0;
+}
+
+.users-list li {
+    margin: 15px 0;
+    padding: 15px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.users-list li:hover {
+    background-color: #e8e8e8;
+}
+
+.users-list a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+}
+
+.user-profile {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+.user-profile p {
+    margin: 10px 0;
+}
 ```
 
 ---
@@ -97,8 +128,8 @@ Now, let's create our JavaScript. We'll start by defining classes for each view/
 ```javascript
 // Abstract View class that all pages will extend
 class AbstractView {
-    constructor() {
-        // Constructor can be used for initialization
+    constructor(params) {
+        // params is passed to all views, but only used by views that need it
     }
     
     setTitle(title) {
@@ -114,6 +145,7 @@ class AbstractView {
 
 **What's happening:**
 - `AbstractView` is a base class that defines the structure all our views will follow.
+- The constructor now accepts a `params` parameter - this will contain URL parameters for views that need them (like the UserProfile view).
 - `setTitle()` updates the browser tab title.
 - `getHtml()` is an async method that returns the HTML content for the view. We make it async to support future enhancements like loading data from APIs.
 
@@ -122,8 +154,8 @@ Now create specific view classes:
 ```javascript
 // Home View
 class Home extends AbstractView {
-    constructor() {
-        super();
+    constructor(params) {
+        super(params);
         this.setTitle("Home");
     }
     
@@ -138,8 +170,8 @@ class Home extends AbstractView {
 
 // About View
 class About extends AbstractView {
-    constructor() {
-        super();
+    constructor(params) {
+        super(params);
         this.setTitle("About");
     }
     
@@ -154,8 +186,8 @@ class About extends AbstractView {
 
 // Contact View
 class Contact extends AbstractView {
-    constructor() {
-        super();
+    constructor(params) {
+        super(params);
         this.setTitle("Contact");
     }
     
@@ -163,19 +195,14 @@ class Contact extends AbstractView {
         return `
             <h1>Contact</h1>
             <p>Get in touch with us!</p>
-            <form id="contact-form">
-                <input type="email" placeholder="Your email" required>
-                <textarea placeholder="Your message" required></textarea>
-                <button type="submit">Send</button>
-            </form>
         `;
     }
 }
 
 // 404 Not Found View
 class NotFound extends AbstractView {
-    constructor() {
-        super();
+    constructor(params) {
+        super(params);
         this.setTitle("404 - Page Not Found");
     }
     
@@ -191,8 +218,9 @@ class NotFound extends AbstractView {
 
 **What's happening:**
 - Each view extends `AbstractView` and implements its own `getHtml()` method.
-- The constructor calls `super()` to run the parent class constructor, then sets a unique title.
+- The constructor calls `super(params)` to run the parent class constructor and pass along the params, then sets a unique title.
 - Each view returns different HTML content as a template literal.
+- All views now accept `params` in their constructor for consistency, even if they don't use them.
 
 ---
 
@@ -223,6 +251,8 @@ const router = async () => {
     const routes = [
         { path: "/", view: Home },
         { path: "/about", view: About },
+        { path: "/users", view: Users },
+        { path: "/user/:id", view: UserProfile },
         { path: "/contact", view: Contact }
     ];
     
@@ -244,8 +274,11 @@ const router = async () => {
         };
     }
     
+    // Extract params if the route has any
+    const params = getParams(match);
+    
     // Create instance of the view and get its HTML
-    const view = new match.route.view();
+    const view = new match.route.view(params);
     document.querySelector("#app").innerHTML = await view.getHtml();
 };
 ```
@@ -264,8 +297,11 @@ const router = async () => {
    - Defines all available routes and their corresponding view classes
    - Compares the current URL (`location.pathname`) against each route
    - Finds the matching route or shows the 404 NotFound view if no match exists
-   - Creates an instance of the matched view class
+   - Uses `getParams()` to extract any URL parameters from the matched route
+   - Creates an instance of the matched view class, passing the params object to its constructor
    - Renders the view's HTML into the `#app` container
+
+**Important note about params**: The `getParams()` function returns an object containing URL parameters. For a route like `/user/:id` matching the URL `/user/2`, it returns `{ id: "2" }`. For routes without parameters, it returns an empty object `{}`. All view constructors receive this params object, but only views that need parameters (like UserProfile) use it.
 
 ---
 
@@ -344,8 +380,8 @@ Now add the Users list view to your `app.js`:
 
 ```javascript
 class Users extends AbstractView {
-    constructor() {
-        super();
+    constructor(params) {
+        super(params);
         this.setTitle("Users");
     }
     
@@ -392,12 +428,21 @@ Now add the UserProfile view:
 ```javascript
 class UserProfile extends AbstractView {
     constructor(params) {
-        super();
-        this.userId = params.id;
+        super(params);
+        this.userId = params?.id;
         this.setTitle("User Profile");
     }
     
     async getHtml() {
+        // Check if we have a valid user ID
+        if (!this.userId) {
+            return `
+                <h1>Invalid User</h1>
+                <p>No user ID provided.</p>
+                <p><a href="/users" data-link>Back to Users List</a></p>
+            `;
+        }
+        
         try {
             const response = await fetch('/users.json');
             const users = await response.json();
@@ -432,73 +477,20 @@ class UserProfile extends AbstractView {
 ```
 
 **What's happening:**
-- The constructor receives a `params` object containing URL parameters
-- We extract `params.id` which comes from the `/user/:id` route pattern
+- The constructor receives a `params` object from the router (via `getParams()`)
+- For the route `/user/:id`, when matching `/user/2`, params will be `{ id: "2" }`
+- We use optional chaining (`params?.id`) to safely access the ID in case params is undefined or doesn't have an id property
+- We check if `userId` exists before trying to use it
 - We fetch the users data and use `find()` to locate the specific user
 - `parseInt(this.userId)` converts the string ID from the URL to a number for comparison
 - If no user is found, we display a friendly error message
 - We provide navigation back to the users list
 
-Finally, update your navigation in `index.html` to include the Users link:
-
-```html
-<nav>
-    <a href="/" data-link>Home</a>
-    <a href="/about" data-link>About</a>
-    <a href="/users" data-link>Users</a>
-    <a href="/contact" data-link>Contact</a>
-</nav>
-```
-
-And add some styling to `styles.css`:
-
-```css
-.users-list {
-    list-style: none;
-    padding: 0;
-}
-
-.users-list li {
-    margin: 15px 0;
-    padding: 15px;
-    background-color: #f4f4f4;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-.users-list li:hover {
-    background-color: #e8e8e8;
-}
-
-.users-list a {
-    color: #333;
-    text-decoration: none;
-    display: block;
-}
-
-.user-profile {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 5px;
-    margin: 20px 0;
-}
-
-.user-profile p {
-    margin: 10px 0;
-}
-```
-
-**Important**: Don't forget to update your routes array in the `router()` function to include both new routes:
-
-```javascript
-const routes = [
-    { path: "/", view: Home },
-    { path: "/about", view: About },
-    { path: "/users", view: Users },
-    { path: "/user/:id", view: UserProfile },
-    { path: "/contact", view: Contact }
-];
-```
+**How params gets here**: When the router matches a URL to a route, it calls `getParams(match)` which extracts the parameter values from the URL. The `getParams()` function:
+1. Looks at the route pattern (`/user/:id`) to find parameter names (`:id`)
+2. Extracts the corresponding values from the actual URL (`/user/2` → `"2"`)
+3. Creates an object mapping parameter names to values (`{ id: "2" }`)
+4. This object is passed to the view's constructor when it's instantiated
 
 **Key concepts in dynamic routing:**
 1. **URL Parameters**: The `:id` syntax in `/user/:id` creates a placeholder that matches any value
@@ -511,12 +503,14 @@ const routes = [
 
 ## Complete Code Summary
 
-Here's the full `app.js` file:
+Here's the full `app.js` file with all components together:
 
 ```javascript
 // Abstract View
 class AbstractView {
-    constructor() {}
+    constructor(params) {
+        // params is passed to all views, but only used by views that need it
+    }
     
     setTitle(title) {
         document.title = title;
@@ -529,8 +523,8 @@ class AbstractView {
 
 // Views
 class Home extends AbstractView {
-    constructor() {
-        super();
+    constructor(params) {
+        super(params);
         this.setTitle("Home");
     }
     
@@ -544,8 +538,8 @@ class Home extends AbstractView {
 }
 
 class About extends AbstractView {
-    constructor() {
-        super();
+    constructor(params) {
+        super(params);
         this.setTitle("About");
     }
     
@@ -559,8 +553,8 @@ class About extends AbstractView {
 }
 
 class Contact extends AbstractView {
-    constructor() {
-        super();
+    constructor(params) {
+        super(params);
         this.setTitle("Contact");
     }
     
@@ -573,8 +567,8 @@ class Contact extends AbstractView {
 }
 
 class Users extends AbstractView {
-    constructor() {
-        super();
+    constructor(params) {
+        super(params);
         this.setTitle("Users");
     }
     
@@ -609,12 +603,21 @@ class Users extends AbstractView {
 
 class UserProfile extends AbstractView {
     constructor(params) {
-        super();
-        this.userId = params.id;
+        super(params);
+        this.userId = params?.id;
         this.setTitle("User Profile");
     }
     
     async getHtml() {
+        // Check if we have a valid user ID
+        if (!this.userId) {
+            return `
+                <h1>Invalid User</h1>
+                <p>No user ID provided.</p>
+                <p><a href="/users" data-link>Back to Users List</a></p>
+            `;
+        }
+        
         try {
             const response = await fetch('/users.json');
             const users = await response.json();
@@ -648,8 +651,8 @@ class UserProfile extends AbstractView {
 }
 
 class NotFound extends AbstractView {
-    constructor() {
-        super();
+    constructor(params) {
+        super(params);
         this.setTitle("404 - Page Not Found");
     }
     
@@ -699,7 +702,11 @@ const router = async () => {
         };
     }
     
-    const view = new match.route.view();
+    // Extract params if the route has any
+    const params = getParams(match);
+    
+    // Pass params to the view constructor
+    const view = new match.route.view(params);
     document.querySelector("#app").innerHTML = await view.getHtml();
 };
 
@@ -732,6 +739,8 @@ window.addEventListener("popstate", router);
 
 5. **Regular Expressions**: Pattern matching enables flexible routing, including support for URL parameters.
 
+6. **Parameter Passing**: All views receive a params object from the router, enabling dynamic routes that respond to URL parameters.
+
 ---
 
 ## Testing Your SPA
@@ -746,11 +755,15 @@ To test locally, you'll need a development server because modern browsers restri
 4. Your browser will open at `http://localhost:5500` (or similar)
 5. The page will automatically reload when you make changes to your files
 
+**Important**: Always navigate to `http://localhost:5500/` (without `index.html` in the URL). Live Server will serve `index.html` by default, and our router expects clean URLs like `/`, `/users`, `/about`, etc.
+
 Once running, test your SPA by:
 - Clicking through all navigation links
 - Using the browser's back and forward buttons
-- Typing URLs directly (like `/users` or `/user/2`)
-- Testing the 404 page with an invalid URL like `/nonexistent`
+- Testing user profiles by clicking on users in the list
+- Testing the 404 page by manually editing the URL to something invalid like `http://localhost:5500/nonexistent`
+
+**Note about direct URL access**: When you manually type routes like `/users` or `/user/2` directly into the browser's address bar and press Enter, Live Server may show an error. This is expected behavior with client-side routing and a simple development server. In a production environment, you would configure your server to always serve `index.html` for all routes, allowing your JavaScript router to handle the routing. For development purposes, simply navigate through the app using the links rather than typing URLs directly.
 
 ---
 
