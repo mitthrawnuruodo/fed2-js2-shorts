@@ -14,7 +14,7 @@ This is a repo for making the extra learning material for JS2
 
 ## Module 3
 
-* SPA vs MPA?
+* [Building a Single Page Application with Vanilla JavaScript](Module%203/spa-vanilla-js-guide.md)
 * NodeJS + Express?
 
 ## Module 4
