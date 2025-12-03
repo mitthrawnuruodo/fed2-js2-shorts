@@ -27,13 +27,13 @@ node -v
 npm -v
 ```
 
-If not, Download it from [nodejs.org](https://nodejs.org/), or install using [Homebrew](https://brew.sh) (for Mac) or similar.
+If not installed, download it from [nodejs.org](https://nodejs.org/), or install using [Homebrew](https://brew.sh) (for Mac) or similar.
 
 ### Step 1: Set Up Node.js Project
 
 Make a new project folder in your `Repos/` folder (or wherever you place your work.)
 
-**Tip**: Make a new github repo, including a README and a `.gitignore` using the Node template, and clone that that to your computer.
+**Tip**: Make a new github repo, including a README, and a `.gitignore` using the Node template, and clone that that to your computer.
 
 Open your Terminal in the new project folder (eg. the built in Terminal in Visual Studio Code).
 
@@ -51,7 +51,7 @@ Your project will have two modules:
 1. `main.js`: The main file that will run your program.
 2. `apiModule.js`: A module that fetches data from an external API.
 
-Tip: Use `touch main.js apiModule.js` to make the files.
+Tip: Use `touch main.js apiModule.js` to make the files:
 
 ```bash
 nodejs-api-example/
