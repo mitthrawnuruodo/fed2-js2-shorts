@@ -15,7 +15,8 @@ This is a repo for making the extra learning material for JS2
 ## Module 3
 
 * [Building a Single Page Application with Vanilla JavaScript](Module%203/spa-vanilla-js-guide.md)
-* NodeJS + Express?
+* [Getting started with NodeJS](Module%203/nodejs.md)
+* [Getting started with Express](Module%203/expressjs.md)
 
 ## Module 4
 
