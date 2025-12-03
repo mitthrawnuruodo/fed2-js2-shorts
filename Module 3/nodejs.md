@@ -51,7 +51,7 @@ Your project will have two modules:
 1. `main.js`: The main file that will run your program.
 2. `apiModule.js`: A module that fetches data from an external API.
 
-Tip: Use `touch test.js apiModule.js` to make the files.
+Tip: Use `touch main.js apiModule.js` to make the files.
 
 ```bash
 nodejs-api-example/
@@ -166,11 +166,11 @@ In `package.json`, edit the "scripts":
 
 ```js
 "scripts": {
-    "test": "/*...*/"
+    "test": "echo \"Error: no test specified\" && exit 1"
 }
 ```
 
-Remove everything after "test:" and replace it with:
+Remove everything in "scripts" and replace it with:
 
 ```js
 "scripts": {
@@ -255,14 +255,14 @@ Server running on http://localhost:3000
 
 You can click (or copy/paste) the link to open it in your browser.
 
-Note: You'll get an error: 
+*Tip*: "You exit the server running with ctrl-C (`^C`)"
+
+Note: You will get an error: 
 
 ```sh
 error	"Route not found"
 ```
 (or `{"error":"Route not found"}`)
-
-Tip: "You exit the server running with ctrl-C (`^C`)"
 
 You need to navigate to http://localhost:3000/user to see some random user data:
 
@@ -312,10 +312,10 @@ Benefits of Using Nodemon:
 * Automatic restarts: Your server will automatically restart when you save changes to any file.
 * Improved development speed: You don’t need to manually stop and restart the server.
 
-***Note** that Nodemon does NOT refresh the web page, that you need to do manually!*
+*Note that Nodemon does NOT refresh the web page, that you need to do manually!*
 
 ### Step 7:  Install Nodemon
-You can install nodemon globally or as a development dependency for your project.
+You can install `nodemon` globally or as a development dependency for your project.
 
 Globally (available system-wide):
 ```bash
@@ -327,9 +327,9 @@ Locally (within the project):
 npm install nodemon --save-dev
 ```
 
-Installing it locally adds it to your project's package.json file under devDependencies.
+Installing it locally adds it to your project's `package.json` file under devDependencies.
 
-Install it locally under devDependencies with `npm install nodemon --save-dev`.
+Here, install it locally under devDependencies with `npm install nodemon --save-dev`.
 
 Also, update the "script" in `package.json`:
 
@@ -356,7 +356,7 @@ How Nodemon Works in the Example:
 Test it: 
 
 * Comment out `console.log(userData);` in `apiModule.js`
-* In `index.js` add a `console.log (user);` after it is fetched:
+* In `index.js` add a `console.log (user);` after it is fetched, but before you make the JSON response:
 
 ```js
 // Fetch the random user data from the external API
@@ -368,7 +368,7 @@ console.log (user);
 res.writeHead(200, { 'Content-Type': 'application/json' });
 ```
 
-* Now add another line in `index.js`:
+* Now add another line in `index.js` just above the `console.log`:
 
 ```js
 user.id = Math.floor(Math.random() * 10000000);
@@ -377,7 +377,7 @@ console.log (user);
 
 Notice that `[nodemon] restarting due to changes...`
 
-Now refresh your browser, and see the changes (both in the Browser and the Terminal).
+Now **refresh your browser**, and see the changes (both in the Browser and the Terminal).
 
 
 #### Postman
