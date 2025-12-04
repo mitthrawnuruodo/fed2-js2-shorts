@@ -192,7 +192,7 @@ In your terminal:
 npm run start
 ```
 
-You will (probably) get an error: 
+You will possibly get an error: 
 
 ```bash
 node:events:498
@@ -203,7 +203,7 @@ Error: listen EADDRINUSE: address already in use :::3000
 //...
 ```
 
-If so, this is probably because we already used port 3000 in [Node.js](./nodejs.md).
+If so, this is probably because we already used port 3000 during the [Node.js](./nodejs.md) article.
 
 We then need to change the server settings in the top of `app.js`, use port 3001 instead of 3000:
 
