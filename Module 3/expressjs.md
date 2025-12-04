@@ -286,7 +286,7 @@ express-multipage-app/
 └── package.json        # Project dependencies and metadata
 ```
 
-Top: Use `touch routes/users.js` to create the file.
+Tip: Use `touch routes/users.js` to create the file.
 
 Then add the code to `routes/users.js`: 
 
@@ -337,7 +337,7 @@ with:
 ```js
 const response = await fetch('https://randomuser.me/api/');
 ```
-This removes the need to install `node-fetch`, since `fetch` is built into modern Node.js.
+This removes the need to install `node-fetch` (step 6), since `fetch` is built into modern Node.js.
 
 ### Step 8: Update the Main Express App (`app.js`)
 Now, integrate the new route into the main app, both under ***Importing route modules***:
