@@ -2,6 +2,9 @@
 
 
 
+## Static
+
+
 
 ## Fetch and Sort Books (as objects)
 
