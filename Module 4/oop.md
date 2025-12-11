@@ -8,7 +8,7 @@
 
 ## Fetch and Sort Books (as objects)
 
-**All code can be found on this repo: [book-example @ GitHub](https://github.com/mitthrawnuruodo/book-example).**
+**All code can be found in this repo: [book-example @ GitHub](https://github.com/mitthrawnuruodo/book-example).**
 
 ### 1) Setup
 
