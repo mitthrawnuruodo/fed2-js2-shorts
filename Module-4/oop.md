@@ -28,7 +28,9 @@ class User {
 ```
 
 * `constructor` runs when a new object is created
-* `this` refers to the current object
+* `this` refers to 
+  * the *instance being built* inside constuctors
+  * the *instance the method is being called on* elsewhere
 * methods are shared by all instances
 
 ## 2. Creating objects (instances)
