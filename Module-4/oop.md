@@ -561,3 +561,6 @@ Why: introduces state (current sort key + direction) and reinforces comparator t
 #### 5. Add a “Search” filter without refetching
 Challenge: Add an `<input>` that filters the displayed list by title or author as you type, but keeps the original data unchanged.
 Why: introduces derived UI state: keep `myBooks` as the source of truth and compute a `filteredBooks` array for rendering.
+
+#### 6. Read one of the books
+Challenge: Pick one book from the list and actually read it. Did you enjoy it? If so: pass it forward. 
