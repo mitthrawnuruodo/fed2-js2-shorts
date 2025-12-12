@@ -532,13 +532,13 @@ Why: this is how your UI becomes interactive without inline `onclick=""`.
 #### 9) Call `init()` (start the app)
 Runs the fetch + render process as soon as the script loads (after HTML parsing because of `defer`).
 
-**Run it**: Use **Live Server** to open `index.html` (this gives you `https://...`, which `fetch` requires).
-
 #### Quick “big picture” summary
 * Fetch JSON
 * Convert data into Book objects (so methods work)
 * Render the list
 * Let the user sort via buttons, then re-render after each sort
+
+**Run it**: Use **Live Server** to open `index.html` (this gives you `https://...`, which `fetch` requires).
 
 ### Challenges
 
