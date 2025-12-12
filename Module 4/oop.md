@@ -1,6 +1,6 @@
 # Object oriented programming
 
-What is OOP (Object-Oriented Programming)?
+**What is OOP (Object-Oriented Programming)?**
 
 OOP is a way of structuring code around **objects** that:
 * represent *things* (users, cars, games, etc.)
@@ -95,6 +95,16 @@ class Admin extends User {
   }
 }
 ```
+* `class Admin extends User` defines `Admin` as a specialized version of `User` that *inherits* all user behavior and can add extra functionality. 
+  * It models an “is-a” relationship: an admin *is a* user, with extra capabilities.
+* `constructor()` runs when you create a new `Admin`
+  * calls the `User` constructor via `super(...)`
+  * sets up `name` and `email` exactly like a normal `User`
+* `deleteUser()` is an **instance method** that exists only on `Admin`
+  * `this` refers to the admin object
+  * `user` is another `User` object passed in as an argument
+  * It uses data from both objects to produce a result
+
 Usage:
 ```js
 const admin = new Admin("Root", "root@example.com");
@@ -129,19 +139,23 @@ class User {
   }
 
   static isValidEmail(email) {
-    return email.includes("@");
+    return email.includes("@"); 
   }
 }
 ```
 Usage:
 ```js
-const user = new User("Lasse", "lasse@example.com");
+const lasse = new User("Lasse", "lasse@example.com");
 
-console.log(User.isValidEmail("test@example.com"));
-console.log(User.isValidEmail("not-an-email"));
+console.log(User.isValidEmail("test@example.com"));   // true
+console.log(User.isValidEmail("not-an-email"));       // false
 
-// user.isValidEmail(...) does NOT work
+console.log(lasse.isValidEmail("test@example.com"));  // TypeError
 ```
+* `User.isValidEmail(...)` works because `isValidEmail` is a **static method**, called on the class itself.
+* It does not use `this` or any instance data.
+* `lasse.isValidEmail(...)` fails because **static methods are not available on instances**.
+  * `lasse` is an object created from `User`, but static methods must be called on `User` itself.
 
 ### When to use static methods
 
