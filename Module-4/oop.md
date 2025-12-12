@@ -1,4 +1,4 @@
-# Object oriented programming
+# Object oriented programming and classes
 
 **What is OOP (Object-Oriented Programming)?**
 
