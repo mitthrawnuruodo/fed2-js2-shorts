@@ -2,11 +2,13 @@
 
 What is OOP (Object-Oriented Programming)?
 
-OOP is a way of structuring code around objects that:
-* represent things (users, cars, games, etc.)
-* bundle data (properties) and behavior (methods) together
+OOP is a way of structuring code around **objects** that:
+* represent *things* (users, cars, games, etc.)
+* bundle **data (properties)** and **behavior (methods)** together
 
-In JavaScript, this is most commonly done with classes.
+In JavaScript, since ECMAScript 2015 (ES6), this is may be done with **classes**.
+
+> Classes in JavaScript are *syntactic sugar over prototypes*. They did not change how the language works internally, but they made object-oriented code easier to read and write. 
 
 ## 1. A simple class
 
@@ -35,8 +37,8 @@ class User {
 const user1 = new User("Lasse", "lasse@example.com");
 const user2 = new User("Anna", "anna@example.com");
 
-console.log(user1.greet());
-console.log(user2.greet());
+console.log(user1.greet()); // "Hi, I'm Lasse"
+console.log(user2.greet()); // "Hi, I'm Anna"
 ```
 * Each instance has its own data, but uses the same methods.
 * Each user is an independent object created from the same class.
@@ -69,9 +71,9 @@ Usage:
 ```js
 const user = new User("Lasse", "lasse@example.com");
 
-console.log(user.getStatus());
+console.log(user.getStatus()); // "Active"
 user.deactivate();
-console.log(user.getStatus());
+console.log(user.getStatus()); // "Inactive"
 ```
 **Why this is encapsulation**
 * State (`isActive`) lives inside the object
@@ -96,14 +98,14 @@ class Admin extends User {
 Usage:
 ```js
 const admin = new Admin("Root", "root@example.com");
-const user = new User("Anna", "anna@example.com");
+const anna = new User("Anna", "anna@example.com");
 
-console.log(admin.greet());
-console.log(admin.deleteUser(user));
+console.log(admin.greet());          // "Hi, I'm Root"
+console.log(admin.deleteUser(anna)); // "Root deleted Anna"; note: it didn't actually delete anything
 ```
 
 **What inheritance gives us**
-* Admin automatically gets everything from User
+* `Admin` automatically gets everything from `User`
 * Shared behavior stays in one place
 * Specialized behavior lives in the subclass
 
@@ -158,7 +160,7 @@ Typical examples:
 ### Setup
 
 **Folder**
-Set up a folder `book-app` or similar (within you Repos/Projects folder) and open it in **VS Code**:
+Set up a folder `book-app` or similar (within your Repos/Projects folder) and open it in VS Code:
 ```
 books-app/
 ├── index.html   # Page markup and buttons
@@ -318,7 +320,7 @@ let myBooks = [];
 
 // 6) Load data from JSON, convert to Book instances, show on page
 async function init() {
-  try{
+  try {
     const res = await fetch("books.json");
     console.log(res);
     if (!res.ok) throw new Error("Failed to load books.json");
@@ -334,12 +336,12 @@ async function init() {
       b => new Book(b.title, b.authorFirstName, b.authorLastName, b.published)
     );
 
-    Book.printList(myBooks);
+    Book.printList(myBooks); // Render the list after fetching
   } catch (e) {
     console.error(e.message);
     document.getElementById("errorMessage").innerText = e.message;
   } finally {
-    console.log ("This runs on success and failure...")
+    console.log ("This runs on success and failure...");
   }
 } // init
 
@@ -377,7 +379,7 @@ init().catch(err => {
 #### 1) `class Book` (a blueprint)
 You define a **Book type** so each book can have:
 * **data** (title, author names, year)
-* **behavior** (methods like toString())
+* **behavior** (methods like `toString()`)
 
 Why: it keeps book-related logic in one place, instead of scattering it across functions.
 ```js
@@ -437,19 +439,26 @@ Why static: again, sorting is a “list operation”, not something a single ins
 #### 5) `let myBooks = []` (app state)
 This is your “current list of books” in memory.
 
-Why `let`: you replace it later after fetching (`myBooks = ...`), and you mutate it when sorting.
+Why `let`: you replace it later after fetching (`myBooks = data.books.map(...)`), then you mutate it when sorting.
+
+> The alternative is to use `const` and *never reassign the variable*; populate it with something like `myBooks.push(...newBooks);`, and only mutate its contents.
 
 #### 6) `init()` function (load + convert + render)
 This is the main startup function.
+
 ##### a) `fetch("books.json")`
 Requests the JSON file.
+
 ##### b) `if (!res.ok) throw ...`
 Ensures you catch HTTP errors (like 404) as real errors.
+
 ##### c) `const data = await res.json()`
 Parses JSON text into a JavaScript object:
 * `data.books` becomes an array of plain objects
+
 ##### d) A bunch of `console.log(...)`
 These are just debug lines to confirm what’s coming back. Notice which data comes out of each, and comment out when done.
+
 ##### e) Convert plain objects into Book instances
 ```js
 myBooks = data.books.map(
@@ -457,6 +466,7 @@ myBooks = data.books.map(
 );
 ```
 Why this matters: JSON gives you **plain objects** with no class methods. Converting makes `book.toString()` work.
+
 ##### f) Print the initial list
 ```js
 Book.printList(myBooks);
@@ -474,6 +484,7 @@ In short: it tells the `Book` class to **render the current list of books to the
 If anything fails (network, JSON parse, etc.):
 * logs the error
 * shows the message in `#errorMessage`
+
 ##### h) finally
 Runs whether it succeeded or failed.
 
@@ -481,8 +492,8 @@ Why: good place for cleanup/logging that should always happen.
 
 #### 7) Sort handlers (triggered by button clicks)
 Each function:
-* sorts `myBooks` in place
-* re-renders the list
+* sorts the `myBooks` array in place, using the corresponding *static* helper method (one of the comparators) from the `Book` class
+* re-renders the list using the *static* `printList()` method
 
 Example:
 ```js
@@ -505,7 +516,7 @@ Why: this is how your UI becomes interactive without inline `onclick=""`.
 #### 9) Call `init()` (start the app)
 Runs the fetch + render process as soon as the script loads (after HTML parsing because of `defer`).
 
-**Run it**: Use **Live Server** to open `index.html` <small>(this gives you `https://...`, which `fetch` requires)</small>.
+**Run it**: Use **Live Server** to open `index.html` (this gives you `https://...`, which `fetch` requires).
 
 #### Quick “big picture” summary
 * Fetch JSON
@@ -518,21 +529,21 @@ Runs the fetch + render process as soon as the script loads (after HTML parsing 
 Add some of your own favourite books to the `books.json` file, then:
 
 #### 1. Replace `innerHTML` with real DOM nodes
-Challenge: Rewrite Book.printList() so it uses `document.createElement("li")` + `appendChild()` (or a `DocumentFragment`) instead of building an HTML string.
+Challenge: Rewrite `Book.printList()` so it uses `document.createElement("li")` + `appendChild()` (or a `DocumentFragment`) instead of building an HTML string.
 Why: safer rendering, avoids HTML injection, and shows efficient DOM patterns.
 
-#### 2. Make sorting “toggle” ascending/descending
-Challenge: Clicking the same sort button again should reverse the order (A→Z then Z→A, oldest→newest then newest→oldest).
-Why: introduces state (current sort key + direction) and reinforces comparator thinking.
-
-#### 3. Use `localeCompare` everywhere (also for author)
+#### 2. Use `localeCompare` everywhere (also for author)
 Challenge: Replace the manual `if (a > b)` comparisons in `sortByTitle` and `sortByAuthor` with `localeCompare` using `{ sensitivity: "base" }`.
 Why: Makes for more robust, readable string sorting and avoids subtle case/diacritics issues.
 
-#### 4. Add a stable tie-breaker
+#### 3. Add a stable tie-breaker
 Challenge: Ensure deterministic results by adding tie-breakers (for example: author sort falls back to title, then year).
 Why: shows why “equal” comparisons matter, especially when many items share the same year/author.
 
+#### 4. Make sorting “toggle” ascending/descending
+Challenge: Clicking the same sort button again should reverse the order (A→Z then Z→A, oldest→newest then newest→oldest).
+Why: introduces state (current sort key + direction) and reinforces comparator thinking.
+
 #### 5. Add a “Search” filter without refetching
 Challenge: Add an `<input>` that filters the displayed list by title or author as you type, but keeps the original data unchanged.
-Why: introduces derived UI state: keep myBooks as the source of truth and compute a filteredBooks array for rendering.
+Why: introduces derived UI state: keep `myBooks` as the source of truth and compute a `filteredBooks` array for rendering.
