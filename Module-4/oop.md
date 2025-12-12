@@ -527,8 +527,6 @@ Connects the HTML buttons to the JS functions.
 document.querySelector("#sortByTitle").addEventListener("click", sortByTitle);
 ```
 
-Why: this is how your UI becomes interactive without inline `onclick=""`.
-
 #### 9) Call `init()` (start the app)
 Runs the fetch + render process as soon as the script loads (after HTML parsing because of `defer`).
 
