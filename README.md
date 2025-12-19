@@ -23,7 +23,7 @@ This is a repo for making the extra learning material for JS2
 * [Object oriented programming](Module-4/oop.md)
     * [Methods](Module-4/Ultra-shorts/Methods.md)
     * [Inheritance](Module-4/Ultra-shorts/Inheritance.md)
-* Closures (HoFs and Currying and Partial Application)?
+* [Functional programming](Module-4/functional-programming.md)
 
 ## Module 5 
 
