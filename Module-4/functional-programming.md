@@ -15,8 +15,6 @@ This allows for **declarative**, **composable**, and **predictable** code — fo
 
 ## 2. Functional Programming vs Object-Oriented Programming
 
-<small style="font-size: 1.55rem">
-
 | Aspect | Object-Oriented Programming (OOP) | Functional Programming (FP) |
 | ------ | --------------------------------- | --------------------------- |
 | **Core idea** | Model real-world entities using objects and classes | Model computation as evaluation of pure functions |
@@ -270,17 +268,13 @@ console.log(counter()); // 3
 
 #### Think of it like…
 
-
 A **backpack** — Every function carries a small “backpack” with it, containing the variables it needs from where it was created. Even when it’s used later, somewhere else in your code, it still has access to those values in its backpack.
-
 
 ### Why Closures Matter in Functional Programming
 Closures allow functions to:
 * **Maintain private state** without using objects or classes
 * **Create configurable functions** that “remember” some settings
 * **Build powerful higher-order functions**
-
-<small style="font-size: 1.25rem">
 
 **Flashback**: That last part of the example from 3. First-Class Functions, is **actually a closure**:
 ```js
@@ -306,10 +300,7 @@ console.log(timesTen(1)); // 10
 ```
 Each returned function keeps its own copy of `n`, thanks to closure.
 
-
-<!--
-_footer: "[Codepen](https://codepen.io/xiaolasse/pen/dPGmXVy?editors=0012)"
--->
+[Codepen](https://codepen.io/xiaolasse/pen/dPGmXVy?editors=0012)
 
 ### Example — Function Factory
 
@@ -327,15 +318,13 @@ console.log(double(5)); // 10
 console.log(triple(5)); // 15
 ```
 
-<small style="font-size: 1.55rem">
-
 Each returned function **remembers** its own `factor` — even though `makeMultiplier` has long finished.
 This is functional programming in action: **functions creating new functions with remembered data**.
 
 
-<!--
-_footer: "[Codepen](https://codepen.io/xiaolasse/pen/KwVoMMX?editors=0012) - <small>PS! Did you notice that this example is identical to the one above (difference is that this use the `function` keyword, the above is an arrow function?)</small>"
--->
+[Codepen](https://codepen.io/xiaolasse/pen/KwVoMMX?editors=0012)
+
+<small>PS! Did you notice that this example is identical to the one above (difference is that this use the `function` keyword, the above is an arrow function?)</small>
 
 ### Example: Day Planner (Closure with Two Functions)
 We’ll make a function that helps you **store a daily task** — and gives you two functions:
@@ -343,8 +332,6 @@ We’ll make a function that helps you **store a daily task** — and gives you 
 * One to **change** it
 
 The task is **stored in a closure**, so it’s private — not accessible directly.
-
-[Codepen](https://codepen.io/xiaolasse/pen/LEGdZZv?editors=0012)
 
 ```js
 function createPlanner(initialTask) {
@@ -368,7 +355,7 @@ monday.setTask("Review code examples");
 console.log(monday.getTask()); // "Today’s task: Review code examples"
 ```
 
-##### Why this works
+#### Why this works
 * `createPlanner("...")` creates a **closure** with a private `task` variable.
 * `getTask()` and `setTask()` both share access to that task, even **after `createPlanner()` has returned**.
 * You can **create multiple planners**, each with their own private task:
@@ -387,7 +374,9 @@ console.log(tuesday.getTask()); // "Today’s task: Team meeting at 14:00"
 console.log(monday.getTask()); // Still: "Today’s task: Review code examples"
 ```
 
-#### Example: Bank Account (Closure with Two Functions)
+[Codepen](https://codepen.io/xiaolasse/pen/LEGdZZv?editors=0012)
+
+### Example: Bank Account (Closure with Two Functions)
 
 ```js
 function createBankAccount(initialBalance) {
@@ -418,7 +407,7 @@ console.log(myAccount.withdraw(30));  // "Withdrew $30. New balance: $120"
 console.log(myAccount.withdraw(200)); // "Insufficient funds. Current balance: $120"
 ```
 
-##### How this closure works:
+#### How this closure works:
 
 * `createBankAccount` creates a local `balance` variable initialized with the starting amount
 * It defines **two functions** that both have access to the same `balance` variable
@@ -436,8 +425,7 @@ console.log(myAccount.withdraw(200)); // "Insufficient funds. Current balance: $
 | **Why it’s useful** | Lets functions keep private data and customize behavior         | Counters, factories, event handlers      |
 | **Functional link** | Enables functions to “carry state” without mutating global data | Pure, reusable, safe                     |
 
-## 2. Higher-Order Functions (HOFs)
-
+## Higher-Order Functions (HOFs)
 
 A **higher-order function** is any function that:
 * Takes one or more functions as arguments, or
@@ -458,8 +446,7 @@ repeat(() => console.log("Hello!"), 3);
 Here, `repeat()` is a **higher-order function** because it takes another function as an argument.</small>
 
 
-
-### 2b. Callback functions
+### Callback functions
 
 A **callback function** is a function that you **pass as an argument** to another function, so that it can be **“called back” later** inside that function.
 
@@ -487,7 +474,7 @@ greet("Lasse", afterGreeting);
 So, **callbacks are the functions you pass**, while **HOFs are the functions that use them**.
 
 
-## 3. Working with Arrays Functionally
+### Working with Arrays Functionally
 JavaScript arrays have several **built-in higher-order methods** that let you process and transform data without mutating it.
 
 Let's re-visit three of these: 
@@ -496,7 +483,7 @@ Let's re-visit three of these:
 * `.reduce()` – Combine Items into One Value
 
 
-### `.map()` – Transform Each Item
+#### `.map()` – Transform Each Item
 **Purpose**: Creates a new array by applying a function to each element.
 ```js
 const numbers = [1, 2, 3, 4];
@@ -511,7 +498,7 @@ console.log(doubled); // [2, 4, 6, 8]
 * Does not modify the original numbers
 
 
-### `.filter()` – Select Certain Items
+#### `.filter()` – Select Certain Items
 **Purpose**: Creates a new array containing only elements that pass a test.
 ```js
 const ages = [12, 25, 17, 30, 16];
@@ -525,7 +512,7 @@ console.log(adults); // [25, 30]
 * Original array is unchanged
 
 
-### `.reduce()` – Combine Items into One Value
+##3# `.reduce()` – Combine Items into One Value
 **Purpose**: Reduces an array to a single value (number, string, object, etc.).
 ```js
 const prices = [10, 20, 30];
@@ -538,10 +525,7 @@ console.log(total); // 60
 * The `0` is the initial value.
 * Returns one result — often used for sums, counts, or building new objects.
 
-
 #### Example with Objects
-
-<small style="font-size: 1.4rem">
 
 You can also use these methods on arrays of objects — very common in real projects.
 ```js
@@ -565,11 +549,7 @@ Each step:
 2. `.map()` transforms them,
 3. `.reduce()` combines them — showing function composition in action.
 
-
-
 #### Chaining
-
-<small style="font-size: 1.65rem">
 
 In the example above, we’re **chaining multiple higher-order functions** — each method (`filter`, `map`, `reduce`) is itself a **HOF**, and we combine them in sequence so the output of one becomes the input of the next:
 ```js
@@ -584,35 +564,29 @@ This is called **function chaining** (or **method chaining**) and it’s a very 
 * Which allows the next one to run immediately,
 * Producing clean, readable, and declarative code.
 
+### Other Useful Functional Array Methods
 
-
-## 4. Other Useful Functional Array Methods
-
-
-
-| Method       | Description                                          | Example                            |
-| ------------ | ---------------------------------------------------- | ---------------------------------- |
+| Method | Description | Example |
+| ------ | ----------- | ------- |
 | [`.forEach()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) | Runs a function for each element (side-effects only) | <span style="white-space: nowrap;">`arr.forEach(x => console.log(x))`</span> |
-| [`.find()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)    | Returns the first matching element                   | `users.find(u => u.id === 2)`      |
-| [`.some()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some)    | Returns `true` if *any* match                        | `arr.some(x => x > 10)`            |
-| [`.every()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every)   | Returns `true` if *all* match                        | `arr.every(x => x > 0)`            |
-| [`.flatMap()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap) | Maps and flattens in one step                        | `arr.flatMap(x => x.items)`        |
+| [`.find()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find) | Returns the first matching element | `users.find(u => u.id === 2)` |
+| [`.some()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some) | Returns `true` if *any* match | `arr.some(x => x > 10)` |
+| [`.every()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every) | Returns `true` if *all* match | `arr.every(x => x > 0)` |
+| [`.flatMap()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap) | Maps and flattens in one step | `arr.flatMap(x => x.items)` |
 
 We'll look at a few of these, and some others in a moment.
 
+### Summary
+| Concept | Meaning |
+| ------- | ------- |
+| **Higher-order function (HOF)** | Takes one or more functions as arguments, or returns a function |
+| **Callback function** | A function passed *as an argument* to another function, to be called later |
+| **Pure function** | Always gives the same output for the same input, with no side effects |
+| **Immutability** | Do not change (mutate) the original data |
+| **Composition** | Combine small, focused functions into bigger ones |
+| **`map` / `filter` / `reduce`** | Common higher-order functions for transforming arrays |
 
-## 5. Summary
-| Concept                         | Meaning                                                                    |
-| ------------------------------- | -------------------------------------------------------------------------- |
-| **Higher-order function (HOF)** | Takes one or more functions as arguments, or returns a function            |
-| **Callback function**           | A function passed *as an argument* to another function, to be called later |
-| **Pure function**               | Always gives the same output for the same input, with no side effects      |
-| **Immutability**                | Do not change (mutate) the original data                                   |
-| **Composition**                 | Combine small, focused functions into bigger ones                          |
-| **`map` / `filter` / `reduce`**       | Common higher-order functions for transforming arrays                      |
-
-
-## 6. Other Common Higher-Order Functions
+### Other Common Higher-Order Functions
 All of the following methods also **take callback functions**** — that’s what makes them **higher-order**.
 
 <!--_footer: "** There's an exception, we'll get back to that..."-->
@@ -622,8 +596,7 @@ All of the following methods also **take callback functions**** — that’s wha
 * `.slice()` – Copy a Portion of an Array**
 * `.sort()` – Order Elements in an Array
 
-
-### `.every()` – Check if *all* elements pass a test
+#### `.every()` – Check if *all* elements pass a test
 **Purpose**: Returns true if every element in the array satisfies the condition.
 ```js
 const scores = [80, 90, 75, 88];
@@ -638,7 +611,7 @@ console.log(allAbove70); // true
 * If any return `false`, it stops early and returns `false`.
 
 
-### `.some()` – Check if *any* element passes a test
+#### `.some()` – Check if *any* element passes a test
 **Purpose**: Returns `true` if **at least one** element satisfies the condition.
 ```js
 const ages = [12, 16, 18, 21];
@@ -654,9 +627,7 @@ console.log(hasAdult); // true
 
 **Tip**: Think of `.every()` as “AND” logic, and `.some()` as “OR” logic.
 
-
-### `.slice()` – Copy a Portion of an Array
-
+#### `.slice()` – Copy a Portion of an Array
 
 **Purpose**: Creates a new array with selected elements (non-mutating).
 ```js
@@ -674,11 +645,7 @@ console.log(fruits);     // ["apple", "banana", "cherry", "date"]
 
 ***Note**: `.slice()` doesn’t use a callback — so it’s not a HOF by definition, but it’s often mentioned together with FP-friendly array methods because it’s pure and non-mutating.*
 
-
-
-### `.sort()` – Order Elements in an Array
-
-<small style="font-size: 1.55rem">
+#### `.sort()` – Order Elements in an Array
 
 **Purpose**: Sorts elements **in place** — but can be made functional by copying first.
 ```js
@@ -698,15 +665,13 @@ console.log(numbers); // [5, 12, 3, 9] — unchanged
 * The spread `[...numbers]` makes a copy first to preserve immutability.
 
 
-
-### Summary
-| Method     | Type          | Returns | Mutates?                     | Example Use                |
-| ---------- | ------------- | ------- | ---------------------------- | -------------------------- |
-| `.every()` | HOF           | Boolean | No                            | “Are all users active?”    |
-| `.some()`  | HOF           | Boolean | No                            | “Is there any admin user?” |
-| `.slice()` | Pure function | Array   | No                            | Copy part of array         |
-| `.sort()`  | HOF           | Array   | Yes <small style="font-size: 1rem">(unless copied first)</small> | Sort numbers or strings    |
-
+#### Summary
+| Method | Type | Returns | Mutates? | Example Use |
+| ------ | ---- | ------- | -------- | ----------- |
+| `.every()` | HOF | Boolean | No | “Are all users active?” |
+| `.some()`  | HOF | Boolean | No | “Is there any admin user?” |
+| `.slice()` | Pure function | Array | No | Copy part of array |
+| `.sort()`  | HOF | Array | Yes <small style="font-size: 1rem">(unless copied first)</small> | Sort numbers or strings |
 
 ### Sidenote: The new method: `toSorted()`
 The standard mutable method:
@@ -726,7 +691,6 @@ const sorted = numbers.toSorted((a,b) => a - b);
 
 The `toSorted()` method of Array instances is the copying version of the `sort()` method. It **returns a new array with the elements sorted**. 
 
-
 #### Why this is important (especially for FP)
 * Mutating the original array (as `sort()` does) violates immutability — a core FP principle.
 * Using `toSorted()` helps you write **pure functions**: no hidden side-effects on your inputs.
@@ -736,7 +700,6 @@ The `toSorted()` method of Array instances is the copying version of the `sort()
     const sorted = [...array].sort(compareFn);
     ```
     Which works, but is a bit more verbose and still a hack. 
-
 
 #### Example with objects
 ```js
@@ -753,7 +716,6 @@ console.log(sortedByPrice);
 // original `products` array remains in original order
 ```
 
-
 #### Quick overview of the new immutable array methods (ES2023+)
 
 | New Method | Immutable version of | Description |
@@ -765,29 +727,26 @@ console.log(sortedByPrice);
 
 All these are **pure, non-mutating** versions — perfect for functional programming.
 
-
-<!-- _backgroundColor: #ffeaea; -->
-
 #### A few caveats
 * `toSorted()` is relatively new: [The MDN docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted) note “Baseline 2023” for support. 
 * It returns a *shallow copy*, so if the array contains objects and you mutate an object inside, you’re still mutating the object not the array reference.
 * If you’re targeting older environments, you might not have native support yet — fallback to `[...array].sort()` or a [polyfill](https://developer.mozilla.org/en-US/docs/Glossary/Polyfill).
 
-<br>
-
 That said, there is support for `toSorted()`, and above mentioned `toReversed()`, `toSpliced()` and `with()`, in all _modern_ browsers and Node 20+.
 
 
-## 7. Currying and Partial Application
+## Currying and Partial Application
 
 These two concepts are about breaking down functions and reusing them more flexibly, both very common in Functional Programming (FP).
 
-<small style="display: block; border: 1px solid gray; margin-top: 40px; padding: 10px 30px; font-size: 1rem; background: #def">
+<small style="display: block; border: 1px solid gray; margin-top: 20px; padding: 10px 20px; background: #def">
 
 ### The name “Currying” comes from a person — not curry, the food
 It’s named after the American logician and mathematician
 **Haskell Brooks Curry (1900 – 1982).**
-He worked on the theory of combinatory logic — a mathematical foundation that later influenced functional programming languages like Haskell (which is also named after him).
+
+He worked on the theory of combinatory logic — a mathematical foundation that later influenced functional programming languages like *Haskell* (which is also named after him).
+
 #### What he formalized
 Haskell Curry (and others before him, like Moses Schönfinkel) explored the idea that:
 > any function taking multiple arguments can be rewritten as a chain of single-argument functions.
@@ -800,7 +759,6 @@ That transformation process is what we now call **currying** — in his honor.
 ### Currying — “One parameter at a time”
 
 Currying means transforming a function that takes **many arguments** into a chain of functions that each take **one argument**.
-
 
 **Example (normal function):**
 ```js
@@ -842,9 +800,7 @@ console.log(addTwo(10)); // 12
 4. When we call `addTwo(5)` → it runs `a + b` → `2 + 5` = 7
     When we call `addTwo(10)` → `2 + 10` = 12
 
-
 This lets you **reuse** specialized versions of a function — a key FP idea.
-
 
 #### In plain words:
 * `addCurried(2)` creates a customized function that always adds `2`.
@@ -852,7 +808,6 @@ This lets you **reuse** specialized versions of a function — a key FP idea.
 
 That’s one of the main ideas in functional programming:
 * Build small, reusable, specialized functions from more general ones.
-
 
 #### Sidenote: Currying and Closures
 
@@ -876,10 +831,7 @@ console.log(addTwo(10)); // 12
 ```
 Here, the inner function forms a closure around `a`, allowing the curried structure to “remember” it even after the first function has finished.
 
-
 ### Partial Application — “Some arguments now, the rest later”
-
-<small style="font-size: 1.4rem">
 
 **Partial application** is similar, but slightly looser:
 You call a function with **some** of its parameters now, and get back a new function expecting the rest.
@@ -902,7 +854,6 @@ console.log(double(3, 4)); // 24 (2 * 3 * 4)
 ```
 Here, `partialMultiply(2)` creates a new function where the first argument is fixed — that’s **partial application**.
 
-
 #### Step-by-step:
 1. **`partialMultiply(2)` is called**
     * The outer function gets `a = 2`.
@@ -919,17 +870,12 @@ Here, `partialMultiply(2)` creates a new function where the first argument is fi
 
 This is **partial application** — it uses a **closure** to remember preset arguments, letting you create flexible, reusable helper functions.
 
-
-
 ### Quick Summary
-
-<small style="font-size: 1.45rem">
 
 | Term | What it does | Example |
 | ---- | ------------ | ------- |
 | **Currying** | Converts a multi-argument function into a chain of single-argument functions | `addCurried(2)(3)`                                |
 | **Partial Application** | Pre-fills some arguments and returns a new function that remembers them | `const double = partialMultiply(2);`<br>`double(3, 4)` |
-
 
 ### Practical Example 1: Currying with `map()`
 
@@ -962,7 +908,6 @@ console.log(taxed); // [125, 250, 375]
 * It’s *pure* — no side effects, doesn’t modify data.
 * It works naturally with higher-order functions like `.map()`.
 
-
 ### Practical Example 2: Partial Application with Event Handlers
 
 Sometimes, you need to pass **extra data** to an event handler.
@@ -972,7 +917,6 @@ Instead of wrapping everything in anonymous functions:
 button.addEventListener("click", () => handleClick("save"));
 ```
 You can use partial application to pre-fill one argument:
-
 
 ```js
 function handleClick(action, event) {
@@ -992,7 +936,6 @@ Why it’s nice:
 * Keeps code cleaner — especially in loops or many buttons.
 
 > We'll get back to `bind()` a little later in this lesson.
-
 
 ### How They Fit into Functional Programming
 
@@ -1052,7 +995,7 @@ introduce.call(person); // "Hi, I'm Lasse"
 
 So `call()` **calls** the function *right away*, with a custom `this`.
 
-#### 2. apply()
+#### 2. `apply()`
 **Purpose**: Just like `call()`, but takes arguments as an array.
 ```js
 function showInfo(city, country) {
@@ -1064,8 +1007,6 @@ const user = { name: "Anna" };
 showInfo.apply(user, ["Bergen", "Norway"]); // "Anna lives in Bergen, Norway."
 ```
 
-<small style="font-size: 1.5rem">
-
 **Difference from `call()`**
 | Method    | How it passes arguments                        |
 | --------- | ---------------------------------------------- |
@@ -1074,9 +1015,7 @@ showInfo.apply(user, ["Bergen", "Norway"]); // "Anna lives in Bergen, Norway."
 
 This is especially useful when your arguments are already stored in an array.
 
-
-#### 3. bind()
-
+#### 3. `bind()`
 
 **Purpose**: Doesn’t call the function right away — instead, it **creates a new function** where `this` (and optionally some arguments) are permanently fixed.
 ```js
