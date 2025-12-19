@@ -435,3 +435,675 @@ console.log(myAccount.withdraw(200)); // "Insufficient funds. Current balance: $
 | **Closure**         | A function that remembers variables from its creation context   | Inner function using `count` or `factor` |
 | **Why it’s useful** | Lets functions keep private data and customize behavior         | Counters, factories, event handlers      |
 | **Functional link** | Enables functions to “carry state” without mutating global data | Pure, reusable, safe                     |
+
+## 2. Higher-Order Functions (HOFs)
+
+
+A **higher-order function** is any function that:
+* Takes one or more functions as arguments, or
+* Returns a function as its result.
+
+Example:
+```js
+function repeat(fn, times) {
+  for (let i = 0; i < times; i++) {
+    fn();
+  }
+}
+
+repeat(() => console.log("Hello!"), 3);
+// → prints "Hello!" three times
+```
+
+Here, `repeat()` is a **higher-order function** because it takes another function as an argument.</small>
+
+
+
+### 2b. Callback functions
+
+A **callback function** is a function that you **pass as an argument** to another function, so that it can be **“called back” later** inside that function.
+
+A **higher-order function** (HOF) is the one that receives (or returns) such a function.
+
+
+**Example:**
+```js
+function greet(name, callback) {
+  console.log(`Hello, ${name}!`);
+  callback(); // <-- calling the callback
+}
+
+function afterGreeting() {
+  console.log("Nice to meet you!");
+}
+
+greet("Lasse", afterGreeting);
+```
+
+**Here:**
+* `greet` → **higher-order function** (because it takes another function as input)
+* `afterGreeting` → **callback function** (because it’s passed in and called back later)
+
+So, **callbacks are the functions you pass**, while **HOFs are the functions that use them**.
+
+
+## 3. Working with Arrays Functionally
+JavaScript arrays have several **built-in higher-order methods** that let you process and transform data without mutating it.
+
+Let's re-visit three of these: 
+* `.map()` – Transform Each Item
+* `.filter()` – Select Certain Items
+* `.reduce()` – Combine Items into One Value
+
+
+### `.map()` – Transform Each Item
+**Purpose**: Creates a new array by applying a function to each element.
+```js
+const numbers = [1, 2, 3, 4];
+
+// double each number
+const doubled = numbers.map(num => num * 2);
+
+console.log(doubled); // [2, 4, 6, 8]
+```
+* Takes a callback function (`num => num * 2`)
+* Returns a new array
+* Does not modify the original numbers
+
+
+### `.filter()` – Select Certain Items
+**Purpose**: Creates a new array containing only elements that pass a test.
+```js
+const ages = [12, 25, 17, 30, 16];
+
+const adults = ages.filter(age => age >= 18);
+
+console.log(adults); // [25, 30]
+```
+* The callback returns `true` or `false`
+* Keeps only values where the callback returns `true`
+* Original array is unchanged
+
+
+### `.reduce()` – Combine Items into One Value
+**Purpose**: Reduces an array to a single value (number, string, object, etc.).
+```js
+const prices = [10, 20, 30];
+
+const total = prices.reduce((sum, price) => sum + price, 0);
+
+console.log(total); // 60
+```
+* The callback receives an **accumulator** (`sum`) and the **current value** (`price`).
+* The `0` is the initial value.
+* Returns one result — often used for sums, counts, or building new objects.
+
+
+#### Example with Objects
+
+<small style="font-size: 1.4rem">
+
+You can also use these methods on arrays of objects — very common in real projects.
+```js
+const products = [
+  { name: "Book", price: 10 },
+  { name: "Pen", price: 2 },
+  { name: "Bag", price: 25 },
+];
+
+// Filter, then map, then reduce:
+const totalExpensive = products
+  .filter(p => p.price > 5)       // keep products over 5
+  .map(p => p.price * 1.25)       // add 25% tax
+  .reduce((sum, price) => sum + price, 0); // sum up
+
+console.log(totalExpensive); // 43.75
+```
+
+Each step:
+1. `.filter()` selects items,
+2. `.map()` transforms them,
+3. `.reduce()` combines them — showing function composition in action.
+
+
+
+#### Chaining
+
+<small style="font-size: 1.65rem">
+
+In the example above, we’re **chaining multiple higher-order functions** — each method (`filter`, `map`, `reduce`) is itself a **HOF**, and we combine them in sequence so the output of one becomes the input of the next:
+```js
+const totalExpensive = products
+  .filter(p => p.price > 5)       // HOF #1 → filters items
+  .map(p => p.price * 1.25)       // HOF #2 → transforms items
+  .reduce((sum, price) => sum + price, 0); // HOF #3 → combines items
+```
+
+This is called **function chaining** (or **method chaining**) and it’s a very common **functional pattern** in JavaScript:
+* Each higher-order function returns a new array (or value),
+* Which allows the next one to run immediately,
+* Producing clean, readable, and declarative code.
+
+
+
+## 4. Other Useful Functional Array Methods
+
+
+
+| Method       | Description                                          | Example                            |
+| ------------ | ---------------------------------------------------- | ---------------------------------- |
+| [`.forEach()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) | Runs a function for each element (side-effects only) | <span style="white-space: nowrap;">`arr.forEach(x => console.log(x))`</span> |
+| [`.find()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)    | Returns the first matching element                   | `users.find(u => u.id === 2)`      |
+| [`.some()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some)    | Returns `true` if *any* match                        | `arr.some(x => x > 10)`            |
+| [`.every()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every)   | Returns `true` if *all* match                        | `arr.every(x => x > 0)`            |
+| [`.flatMap()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap) | Maps and flattens in one step                        | `arr.flatMap(x => x.items)`        |
+
+We'll look at a few of these, and some others in a moment.
+
+
+## 5. Summary
+| Concept                         | Meaning                                                                    |
+| ------------------------------- | -------------------------------------------------------------------------- |
+| **Higher-order function (HOF)** | Takes one or more functions as arguments, or returns a function            |
+| **Callback function**           | A function passed *as an argument* to another function, to be called later |
+| **Pure function**               | Always gives the same output for the same input, with no side effects      |
+| **Immutability**                | Do not change (mutate) the original data                                   |
+| **Composition**                 | Combine small, focused functions into bigger ones                          |
+| **`map` / `filter` / `reduce`**       | Common higher-order functions for transforming arrays                      |
+
+
+## 6. Other Common Higher-Order Functions
+All of the following methods also **take callback functions**** — that’s what makes them **higher-order**.
+
+<!--_footer: "** There's an exception, we'll get back to that..."-->
+
+* `.every()` – Check if *all* elements pass a test
+* `.some()` – Check if *any* element passes a test
+* `.slice()` – Copy a Portion of an Array**
+* `.sort()` – Order Elements in an Array
+
+
+### `.every()` – Check if *all* elements pass a test
+**Purpose**: Returns true if every element in the array satisfies the condition.
+```js
+const scores = [80, 90, 75, 88];
+
+const allAbove70 = scores.every(score => score >= 70);
+
+console.log(allAbove70); // true
+```
+**Explanation:**
+* The callback `(score => score >= 70)` runs for each item.
+* If all return `true`, `.every()` returns `true`.
+* If any return `false`, it stops early and returns `false`.
+
+
+### `.some()` – Check if *any* element passes a test
+**Purpose**: Returns `true` if **at least one** element satisfies the condition.
+```js
+const ages = [12, 16, 18, 21];
+
+const hasAdult = ages.some(age => age >= 18);
+
+console.log(hasAdult); // true
+```
+**Explanation:**
+* The callback runs for each item until it finds one that’s `true`.
+* Returns `true` immediately if a match is found.
+* Returns `false` is no match is found.
+
+**Tip**: Think of `.every()` as “AND” logic, and `.some()` as “OR” logic.
+
+
+### `.slice()` – Copy a Portion of an Array
+
+
+**Purpose**: Creates a new array with selected elements (non-mutating).
+```js
+const fruits = ["apple", "banana", "cherry", "date"];
+
+const someFruits = fruits.slice(1, 3);
+
+console.log(someFruits); // ["banana", "cherry"]
+console.log(fruits);     // ["apple", "banana", "cherry", "date"]
+```
+**Explanation:**
+* Takes `start` and `end` indices (`end` not included).
+* Returns a **shallow copy** of that segment.
+* Doesn’t modify the original — fits perfectly with FP principles.
+
+***Note**: `.slice()` doesn’t use a callback — so it’s not a HOF by definition, but it’s often mentioned together with FP-friendly array methods because it’s pure and non-mutating.*
+
+
+
+### `.sort()` – Order Elements in an Array
+
+<small style="font-size: 1.55rem">
+
+**Purpose**: Sorts elements **in place** — but can be made functional by copying first.
+```js
+const numbers = [5, 12, 3, 9];
+
+const sorted = [...numbers].sort((a, b) => a - b);
+
+console.log(sorted);  // [3, 5, 9, 12]
+console.log(numbers); // [5, 12, 3, 9] — unchanged
+```
+**Explanation:**
+* The callback `(a, b)` compares two elements.
+* Return value determines order:
+    * `< 0` → `a` before `b`
+    * `> 0` → `a` after `b`
+    * `0` → keep same order
+* The spread `[...numbers]` makes a copy first to preserve immutability.
+
+
+
+### Summary
+| Method     | Type          | Returns | Mutates?                     | Example Use                |
+| ---------- | ------------- | ------- | ---------------------------- | -------------------------- |
+| `.every()` | HOF           | Boolean | No                            | “Are all users active?”    |
+| `.some()`  | HOF           | Boolean | No                            | “Is there any admin user?” |
+| `.slice()` | Pure function | Array   | No                            | Copy part of array         |
+| `.sort()`  | HOF           | Array   | Yes <small style="font-size: 1rem">(unless copied first)</small> | Sort numbers or strings    |
+
+
+### Sidenote: The new method: `toSorted()`
+The standard mutable method:
+```js
+const numbers = [3, 1, 4];
+numbers.sort((a,b) => a - b);
+// numbers is now mutated (sorted)
+```
+
+The modern immutable alternative:
+```js
+const numbers = [3, 1, 4];
+const sorted = numbers.toSorted((a,b) => a - b);
+// sorted is the new sorted array
+// numbers remains unchanged
+```
+
+The `toSorted()` method of Array instances is the copying version of the `sort()` method. It **returns a new array with the elements sorted**. 
+
+
+#### Why this is important (especially for FP)
+* Mutating the original array (as `sort()` does) violates immutability — a core FP principle.
+* Using `toSorted()` helps you write **pure functions**: no hidden side-effects on your inputs.
+* It improves predictability, easier debugging, easier reasoning about state changes.
+* Prior to `toSorted()`, the common workaround was:
+    ```js
+    const sorted = [...array].sort(compareFn);
+    ```
+    Which works, but is a bit more verbose and still a hack. 
+
+
+#### Example with objects
+```js
+const products = [
+  { name: "Book",     price: 10 },
+  { name: "Pen",      price: 2 },
+  { name: "Backpack", price: 25 },
+];
+
+// Sort by price, but immutably:
+const sortedByPrice = products.toSorted((a, b) => a.price - b.price);
+
+console.log(sortedByPrice);
+// original `products` array remains in original order
+```
+
+
+#### Quick overview of the new immutable array methods (ES2023+)
+
+| New Method | Immutable version of | Description |
+| ---------- | -------------------- | ----------- |
+| [`toSorted()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted) | `sort()` | Returns a new sorted array (original untouched) |
+| [`toReversed()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toReversed ) | `reverse()` | Returns a new array in reverse order |
+| [`toSpliced()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced) | `splice()` | Returns a new array with items added/removed, without changing the original |
+| [`with(index, value)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/with) | direct index assignment | Returns a copy with one element replaced |
+
+All these are **pure, non-mutating** versions — perfect for functional programming.
+
+
+<!-- _backgroundColor: #ffeaea; -->
+
+#### A few caveats
+* `toSorted()` is relatively new: [The MDN docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted) note “Baseline 2023” for support. 
+* It returns a *shallow copy*, so if the array contains objects and you mutate an object inside, you’re still mutating the object not the array reference.
+* If you’re targeting older environments, you might not have native support yet — fallback to `[...array].sort()` or a [polyfill](https://developer.mozilla.org/en-US/docs/Glossary/Polyfill).
+
+<br>
+
+That said, there is support for `toSorted()`, and above mentioned `toReversed()`, `toSpliced()` and `with()`, in all _modern_ browsers and Node 20+.
+
+
+## 7. Currying and Partial Application
+
+These two concepts are about breaking down functions and reusing them more flexibly, both very common in Functional Programming (FP).
+
+<small style="display: block; border: 1px solid gray; margin-top: 40px; padding: 10px 30px; font-size: 1rem; background: #def">
+
+### The name “Currying” comes from a person — not curry, the food
+It’s named after the American logician and mathematician
+**Haskell Brooks Curry (1900 – 1982).**
+He worked on the theory of combinatory logic — a mathematical foundation that later influenced functional programming languages like Haskell (which is also named after him).
+#### What he formalized
+Haskell Curry (and others before him, like Moses Schönfinkel) explored the idea that:
+> any function taking multiple arguments can be rewritten as a chain of single-argument functions.
+
+So, a function `f(a, b)` can be expressed as `f(a)(b)`.
+That transformation process is what we now call **currying** — in his honor.
+
+</small>
+
+### Currying — “One parameter at a time”
+
+Currying means transforming a function that takes **many arguments** into a chain of functions that each take **one argument**.
+
+
+**Example (normal function):**
+```js
+function add(a, b) {
+  return a + b;
+}
+
+add(2, 3); // 5
+```
+**Curried version:**
+```js
+function addCurried(a) {
+  return function (b) {
+    return a + b;
+  };
+}
+
+addCurried(2)(3); // 5
+```
+The first call “remembers” the `a` value, and returns a new function waiting for `b`.
+
+
+You can also store the first call for reuse:
+```js
+const addTwo = addCurried(2);
+console.log(addTwo(5)); // 7
+console.log(addTwo(10)); // 12
+```
+
+**Step-by-step:**
+1. `addCurried(2)` is **called**
+    * The function `addCurried` receives `a = 2`.
+    * It **returns a new function** that expects another parameter `b`.
+2. **That returned function “remembers” `a = 2`**
+    * Thanks to **closures**, the inner function keeps access to variables from its parent scope.
+    * So even after `addCurried` has finished running, the value `a = 2` is still stored.
+3. We store that returned function in `addTwo`
+    * Now, `addTwo` is a function that adds 2 to whatever number you give it.
+4. When we call `addTwo(5)` → it runs `a + b` → `2 + 5` = 7
+    When we call `addTwo(10)` → `2 + 10` = 12
+
+
+This lets you **reuse** specialized versions of a function — a key FP idea.
+
+
+#### In plain words:
+* `addCurried(2)` creates a customized function that always adds `2`.
+* This is powerful because you can reuse `addTwo` anywhere — it’s a tiny, specialized function built from a more general one.
+
+That’s one of the main ideas in functional programming:
+* Build small, reusable, specialized functions from more general ones.
+
+
+#### Sidenote: Currying and Closures
+
+Currying **relies on closures** to work — every time you call a curried function, it returns another function that **remembers** the earlier arguments through a closure.
+
+So you can think of it like this: **Currying = nesting + closures**
+
+Each inner function “closes over” (keeps access to) the parameters of the outer ones.
+That’s how it can use those earlier values later on.
+
+**Example recap:**
+```js
+function addCurried(a) {
+  return function (b) {
+    return a + b; // ← closure keeps access to 'a'
+  };
+}
+
+const addTwo = addCurried(2);
+console.log(addTwo(10)); // 12
+```
+Here, the inner function forms a closure around `a`, allowing the curried structure to “remember” it even after the first function has finished.
+
+
+### Partial Application — “Some arguments now, the rest later”
+
+<small style="font-size: 1.4rem">
+
+**Partial application** is similar, but slightly looser:
+You call a function with **some** of its parameters now, and get back a new function expecting the rest.
+
+**Example:**
+```js
+function multiply(a, b, c) {
+  return a * b * c;
+}
+
+// Partially apply the first argument:
+function partialMultiply(a) {
+  return function (b, c) {
+    return multiply(a, b, c);
+  };
+}
+
+const double = partialMultiply(2);
+console.log(double(3, 4)); // 24 (2 * 3 * 4)
+```
+Here, `partialMultiply(2)` creates a new function where the first argument is fixed — that’s **partial application**.
+
+
+#### Step-by-step:
+1. **`partialMultiply(2)` is called**
+    * The outer function gets `a = 2`.
+    * It returns a new inner function that still needs `b` and `c`.
+2. **The inner function forms a closure**
+    * It “remembers” the value of `a` (2), even after `partialMultiply` has finished running.
+    * That’s why we can still use `a` later inside `multiply(a, b, c)`.
+3. **We store that returned function in `double`**
+    * `double` now represents a *specialized* version of `multiply` where the first argument is always `2`.
+4. **When we call `double(3, 4)` → it runs `multiply(2, 3, 4)` → returns `24`.**
+
+**In plain words:**
+`partialMultiply(2)` **pre-fills** one argument `(a = 2)` and gives you back a reusable function that multiplies any two other numbers by 2.
+
+This is **partial application** — it uses a **closure** to remember preset arguments, letting you create flexible, reusable helper functions.
+
+
+
+### Quick Summary
+
+<small style="font-size: 1.45rem">
+
+| Term | What it does | Example |
+| ---- | ------------ | ------- |
+| **Currying** | Converts a multi-argument function into a chain of single-argument functions | `addCurried(2)(3)`                                |
+| **Partial Application** | Pre-fills some arguments and returns a new function that remembers them | `const double = partialMultiply(2);`<br>`double(3, 4)` |
+
+
+### Practical Example 1: Currying with `map()`
+
+Imagine you want to **add tax** to a list of prices — and the tax rate might change.
+
+Instead of hardcoding it each time:
+```js
+const prices = [100, 200, 300];
+const taxed = prices.map(price => price * 1.25);
+```
+
+You can use ***currying*** to make this reusable:
+
+```js
+// Curried function: one argument at a time
+const addTax = rate => price => price * (1 + rate);
+
+// Create a reusable 25% tax function
+const add25Percent = addTax(0.25);
+
+// Use in map
+const prices = [100, 200, 300];
+const taxed = prices.map(add25Percent);
+
+console.log(taxed); // [125, 250, 375]
+```
+
+**Why it’s nice:**
+* You can easily reuse `addTax(0.25)` elsewhere.
+* It’s *pure* — no side effects, doesn’t modify data.
+* It works naturally with higher-order functions like `.map()`.
+
+
+### Practical Example 2: Partial Application with Event Handlers
+
+Sometimes, you need to pass **extra data** to an event handler.
+
+Instead of wrapping everything in anonymous functions:
+```js
+button.addEventListener("click", () => handleClick("save"));
+```
+You can use partial application to pre-fill one argument:
+
+
+```js
+function handleClick(action, event) {
+  console.log(`Button clicked: ${action}`);
+  console.log(event.type); // e.g. "click"
+}
+
+// Create a partially applied version:
+const handleSaveClick = handleClick.bind(null, "save");
+
+// Add event listener:
+button.addEventListener("click", handleSaveClick);
+```
+
+Why it’s nice:
+* You “preload” data (`"save"`) into a function.
+* Keeps code cleaner — especially in loops or many buttons.
+
+> We'll get back to `bind()` a little later in this lesson.
+
+
+### How They Fit into Functional Programming
+
+| Concept | Purpose in FP | Everyday Use |
+| ------- | ------------- | ------------ |
+| **Currying** | Makes functions more composable and reusable; allows building complex behavior from smaller pieces | Create reusable logic for `.map()`, `.filter()`, etc. |
+| **Partial Application** | Lets you “preset” some arguments and reuse the function later | Pre-fill parameters for event handlers or utility functions |
+| **Both** | Promote **pure**, **reusable**, and **modular** functions — core FP principles | Encourage cleaner, more declarative, and maintainable code  |
+
+## Functions as Objects
+In JavaScript, **functions are special kinds of objects**.
+
+That means:
+* You can store them in variables
+* Pass them around as arguments
+* Return them from other functions
+  …but also — just like any other object —
+  they can have **properties and methods**.
+
+**Example:**
+```js
+function greet(name) {
+  console.log(`Hello, ${name}!`);
+}
+
+console.log(typeof greet); // "function"
+console.log(greet.name);   // "greet"
+console.log(greet.length); // 1 (number of parameters)
+```
+Under the hood, every function is really an object with extra callable behavior.
+
+### Built-in Function Methods
+Every function object automatically has three powerful built-in methods:
+* [`call()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call), 
+* [`apply()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply), and 
+* [`bind()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind) 
+
+— they all control **how a function is executed** and **what `this` refers to** inside it.
+
+Let’s go through them one by one:
+
+#### 1. `call()`
+**Purpose**: Calls a function immediately, but lets you set what `this` refers to.
+```js
+function introduce() {
+  console.log(`Hi, I'm ${this.name}`);
+}
+
+const person = { name: "Lasse" };
+
+introduce.call(person); // "Hi, I'm Lasse"
+```
+
+**How it works:**
+* First argument → the value of `this`
+* Remaining arguments → normal parameters
+
+So `call()` **calls** the function *right away*, with a custom `this`.
+
+#### 2. apply()
+**Purpose**: Just like `call()`, but takes arguments as an array.
+```js
+function showInfo(city, country) {
+  console.log(`${this.name} lives in ${city}, ${country}.`);
+}
+
+const user = { name: "Anna" };
+
+showInfo.apply(user, ["Bergen", "Norway"]); // "Anna lives in Bergen, Norway."
+```
+
+<small style="font-size: 1.5rem">
+
+**Difference from `call()`**
+| Method    | How it passes arguments                        |
+| --------- | ---------------------------------------------- |
+| `call()`  | comma-separated list (`fn.call(obj, a, b, c)`) |
+| `apply()` | single array (`fn.apply(obj, [a, b, c])`)      |
+
+This is especially useful when your arguments are already stored in an array.
+
+
+#### 3. bind()
+
+
+**Purpose**: Doesn’t call the function right away — instead, it **creates a new function** where `this` (and optionally some arguments) are permanently fixed.
+```js
+function greet(greeting) {
+  console.log(`${greeting}, I'm ${this.name}`);
+}
+
+const user = { name: "Sofie" };
+
+// Create a new function bound to user
+const greetUser = greet.bind(user);
+
+greetUser("Hello"); // "Hello, I'm Sofie"
+```
+
+You can think of `bind()` as **partial application + “this” control**.
+It’s great for callbacks and event handlers where you don’t want to lose context.
+
+#### Summary
+| Method | Calls Immediately? | Arguments Form | What It Does |
+| ------ | ------------------ | -------------- | ------------ |
+| **`call()`**  | Yes | List (`a, b, c`) | Calls the function with a given `this` value |
+| **`apply()`** | Yes | Array (`[a, b, c]`) | Calls the function with a given `this`, using arguments from an array |
+| **`bind()`**  | No | List (`a, b, c`) | Returns a *new* function with a fixed `this` (and optional preset arguments) |
+
+#### Why this matters in Functional Programming
+* It proves that **functions are objects**, not just “pieces of code.”
+* You can **manipulate** and reuse functions dynamically —
+for example, pre-binding context or arguments.
+* They enable powerful patterns like **partial application**, **method borrowing**, and **callback composition**.
