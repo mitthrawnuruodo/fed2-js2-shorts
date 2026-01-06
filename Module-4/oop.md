@@ -1,6 +1,6 @@
 # Object oriented programming and classes
 
-**What is OOP (Object-Oriented Programming)?**
+**What is Object-Oriented Programming (OOP)?**
 
 OOP is a way of structuring code around **objects** that:
 * represent *things* (users, cars, games, etc.)
@@ -175,7 +175,7 @@ Typical examples:
 
 ### Setup
 
-**Folder**
+**Folder**  
 Set up a folder `book-app` or similar (within your Repos/Projects folder) and open it in VS Code:
 ```
 books-app/
