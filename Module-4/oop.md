@@ -1,4 +1,4 @@
-# Object oriented programming and classes
+# Object oriented programming and classes in JavaScript
 
 **What is Object-Oriented Programming (OOP)?**
 
