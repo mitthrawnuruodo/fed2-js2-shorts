@@ -247,7 +247,7 @@ Example (Luigi figure):
 
 ### 2. Then add `main.js` file: 
 
-Her we:
+Here we:
 1. Create a Promise-wrapped XHR helper function
 2. Make a Render helper that updates the DOM
 3. Orchestrate: fetch then render, with async/await
