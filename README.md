@@ -4,8 +4,7 @@ This is a repo for making the extra learning material for JS2
 
 ## Module 1 - Typescript, destructuring and chaining
 
-* Typescript 101?
-* Destructuring (rest/spread) and chaining array methods?
+* Typescript Quiz
 
 ## Module 2 - Promises, APIs and Testing with Jest
 
