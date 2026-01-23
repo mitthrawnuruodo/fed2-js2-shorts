@@ -14,15 +14,23 @@ npm install --save-dev jest
 This adds Jest as a development dependency. It works the same way whether your project is brand new or has been around for years.
 
 **2. Add a Test Script**
-Open your package.json and add a test command:
+This lessom uses ES Modules, while Jest normally prefers CommonJS, so to be able to use ES Modules we need to use Jest in experimental mode.
+
+First add this to `package.json`: 
+```json
+   "type": "module"
+```
+<small>If you used `npm init -y` to make the project, you may have `"type": "commonjs"` set, if so, change it to `"type": "module"`.
+
+Then add a test command, including the experimantal flag:
 ```json
 {
   "scripts": {
-    "test": "jest"
+    "test": "node --experimental-vm-modules node_modules/.bin/jest"
   }
 }
 ```
-If the file already has a scripts section, just add the test line.
+If the file already has a scripts section, just add/change the test line.
 
 **3. Create Your First Test File**
 Jest automatically runs any file that ends with `.test.js` or `.spec.js`.
