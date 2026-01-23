@@ -20,7 +20,7 @@ First add this to `package.json`:
 ```json
    "type": "module"
 ```
-<small>If you used `npm init -y` to make the project, you may have `"type": "commonjs"` set, if so, change it to `"type": "module"`.
+<small>If you used `npm init -y` to make the project, you may have `"type": "commonjs"` set, if so, change it to `"type": "module"`.</small>
 
 Then add a test command, including the experimantal flag:
 ```json
