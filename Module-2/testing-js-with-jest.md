@@ -47,7 +47,7 @@ Use this command to run the test(s):
 ```sh
 npm test
 ```
-Or `npm run test`-
+<small>Or `npm run test`.</small>
 
 Jest will find all test files, run them, and show you which tests passed or failed.
 
