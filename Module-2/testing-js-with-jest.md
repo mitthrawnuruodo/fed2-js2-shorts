@@ -42,10 +42,13 @@ Example:
 add.js
 add.test.js
 ```
-**4. Run Jest**
+**4. Run Jest**  
+Use this command to run the test(s):
 ```sh
 npm test
 ```
+Or `npm run test`-
+
 Jest will find all test files, run them, and show you which tests passed or failed.
 
 That’s the entire setup. From here, you can start adding test files one by one, whether the project is brand new or already full of code.
