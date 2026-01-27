@@ -78,6 +78,8 @@ This simple pattern shows the bare essentials:
 * Organise tests using Arrange (set up), Act (call function), Assert (check outcome).
 * Small, predictable functions lead to simple, reliable tests.
 
+<small>[What Is a Pure Function in JavaScript?](https://www.freecodecamp.org/news/what-is-a-pure-function-in-javascript-acb887375dfe/)</small>
+
 ## Covering Real Behaviour: Think in Cases, Not Just Happy Paths
 Most functions have rules, exceptions, and edge cases. Tests should reflect that.
 
