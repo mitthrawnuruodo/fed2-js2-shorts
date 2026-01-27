@@ -203,7 +203,7 @@ test('returns user data when the request succeeds', async () => {
   expect(result).toEqual(mockUser);
 });
 ```
-And a test for error handling:
+And add a test for error handling:
 ```js
 test('throws an error when the request fails', async () => {
   fetch.mockResolvedValue({ ok: false });
