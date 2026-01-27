@@ -186,6 +186,7 @@ export async function fetchUser(id) {
 Here is a test that simulates both success and failure:
 ```js
 // api.test.js
+import { jest } from '@jest/globals';
 import { fetchUser } from './api.js';
 
 global.fetch = jest.fn();
