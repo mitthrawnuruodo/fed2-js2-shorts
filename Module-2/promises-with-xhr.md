@@ -1,5 +1,9 @@
 # Promises with XHR (and Amiibos)
 
+> [!IMPORTANT]
+> Note that per. 2026-02-02 the Amiibo API is down.  
+> I've updated [the example](https://codepen.io/xiaolasse/pen/vEGOaBY?editors=1011) to (temporarily?) use the [Studio Ghibli API](https://ghibliapi.vercel.app/) instead, with a few tweaks, but - for now - kept the old functions intact. 
+
 ## Promise
 
 A **Promise** in JavaScript is an object that represents the eventual completion (or failure) of an asynchronous operation — and its resulting value.
