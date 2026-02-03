@@ -288,7 +288,7 @@ class Book {
     const listElement = document.getElementById("myList");
     let html = "";
     for (const book of booklist) {
-      html += `<li>${book.toString()}</li>`;
+      html += `<li class="book">${book}</li>`;
     }
     listElement.innerHTML = html;
   }
