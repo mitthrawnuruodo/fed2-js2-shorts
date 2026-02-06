@@ -16,7 +16,7 @@ p.sayHello(); // "Hello!"
 * `sayHello()` is a method.
 * You call it on the object (`p.sayHello()`).
 
-## Example 2 — Method using this
+## Example 2 — Method using `this`
 ```js
 class Person {
   constructor(name) {
