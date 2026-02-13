@@ -63,10 +63,11 @@ xhr.send();
 ```
 
 Explanation:
-* `xhr.open(method, url)` prepares the request.
-* `xhr.onreadystatechange` runs every time the request’s state changes.
-* When `readyState` is `4` (request finished) and `status` is `200` (OK), we know we got a successful response.
-* We then parse the JSON text (`xhr.responseText`) into a JS object and use it.
+1. `xhr.open(method, url)` prepares the request.
+2. `xhr.onreadystatechange` runs every time the request’s state changes.
+  * When `readyState` is `4` (request finished) and `status` is `200` (OK), we know we got a successful response.
+3. We then parse the JSON text (`xhr.responseText`) into a JS object and use it.
+4. We need to actually send the request
 
 [It works](https://codepen.io/xiaolasse/pen/VYaLxLb?editors=0012) — but it’s clunky.
 
