@@ -1,6 +1,7 @@
 # How to Succeed With Larger Front-End Assignments
 
-This assignment is not only about *what* you build, but *how* you work.
+Larger assignments are not only about *what* you build, but *how* you work.
+
 Strong projects come from deliberate planning, structured execution, and clear documentation - not from rushing into code.
 
 Use the checklist below **before**, **during**, and **after** development.
