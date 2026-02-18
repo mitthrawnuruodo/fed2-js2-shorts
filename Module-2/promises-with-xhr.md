@@ -1,8 +1,8 @@
 # Promises with XHR (and Amiibos)
 
 > [!IMPORTANT]
-> Note that per. 2026-02-02 the Amiibo API is down.  
-> I've updated [the example](https://codepen.io/xiaolasse/pen/vEGOaBY?editors=1011) to (temporarily?) use the [Studio Ghibli API](https://ghibliapi.vercel.app/) instead, with a few tweaks, but - for now - kept the old functions intact. 
+> Note that per. 2026-02-02 the [Amiibo API](https://amiiboapi.org/) was down, and there still may be some issues with the certificate.  
+> I've updated [the example](https://codepen.io/xiaolasse/pen/vEGOaBY?editors=1011) to be able use the [Studio Ghibli API](https://ghibliapi.vercel.app/) instead (using a slightly different render function), so if you get a network error, switch to the Studio Ghibli URL and render function. 
 
 ## Promise
 
@@ -63,10 +63,11 @@ xhr.send();
 ```
 
 Explanation:
-* `xhr.open(method, url)` prepares the request.
-* `xhr.onreadystatechange` runs every time the request’s state changes.
-* When `readyState` is `4` (request finished) and `status` is `200` (OK), we know we got a successful response.
-* We then parse the JSON text (`xhr.responseText`) into a JS object and use it.
+1. `xhr.open(method, url)` prepares the request.
+2. `xhr.onreadystatechange` runs every time the request’s state changes.
+    * When `readyState` is `4` (request finished) and `status` is `200` (OK), we know we got a successful response.
+3. We then parse the JSON text (`xhr.responseText`) into a JS object and use it.
+4. We need to actually send the request
 
 [It works](https://codepen.io/xiaolasse/pen/VYaLxLb?editors=0012) — but it’s clunky.
 

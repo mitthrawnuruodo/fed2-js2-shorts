@@ -16,7 +16,7 @@ p.sayHello(); // "Hello!"
 * `sayHello()` is a method.
 * You call it on the object (`p.sayHello()`).
 
-## Example 2 — Method using this
+## Example 2 — Method using `this`
 ```js
 class Person {
   constructor(name) {
@@ -31,7 +31,10 @@ class Person {
 const anna = new Person("Anna");
 anna.greet(); // "Hi, I'm Anna"
 ```
-* Inside a method, `this` refers to the current object.
+* In a constructor called with `new`, `this` refers to the new object being created.
+  * In this example, `new Person("Anna")` creates a new object and assigns it to `this` inside the `constructor`.
+* When a method is called on an instance of a class, `this` refers to that instance.
+  * So, in the example, `anna.greet()` makes `this` refer to `anna` inside the `greet()` method.
 
 ## Example 3 — Multiple methods
 ```js
