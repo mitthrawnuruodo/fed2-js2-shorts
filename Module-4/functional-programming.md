@@ -2,7 +2,7 @@
 
 ## 1. What is Functional Programming?
 
-**Functional Programming** (FP) is a programming paradigm — a way of thinking about and organizing code — that treats **functions as the main building blocks** of programs.
+**Functional Programming** (FP) is a programming paradigm - a way of thinking about and organizing code - that treats **functions as the main building blocks** of programs.
 
 Instead of changing state and modifying objects (as in OOP), functional programming focuses on data transformation: you take an input, process it through a series of pure functions, and produce an output.
 
@@ -11,7 +11,7 @@ In FP, **functions are first-class citizens**, meaning:
 * You can **pass them as arguments** to other functions
 * You can **return functions** from functions
 
-This allows for **declarative**, **composable**, and **predictable** code — focusing on what to do rather than how to do it.
+This allows for **declarative**, **composable**, and **predictable** code - focusing on what to do rather than how to do it.
 
 ## 2. Functional Programming vs Object-Oriented Programming
 
@@ -63,7 +63,7 @@ count = increment(count);
 console.log(count); // 1
 ```
 
-Here we don’t change existing state — we return a new value instead.
+Here we don’t change existing state - we return a new value instead.
 
 ## 4. How FP and OOP Can Work Together
 Although FP and OOP are often presented as opposites, **modern JavaScript allows mixing both styles**.
@@ -148,7 +148,7 @@ Functional programming is built around three main ideas:
 2. **Separation of Data and Functions**
 3. **First-Class Functions**
 
-### 1. Immutability — “Don’t change data, create new data.”
+### 1. Immutability - “Don’t change data, create new data.”
 In functional programming, **data is never modified** after it’s created.
 
 Instead of changing an existing value, you create a **new version** of it.
@@ -168,12 +168,12 @@ user.age = 56; // directly changes the object
 const user = { name: "Lasse", age: 55 };
 const updatedUser = { ...user, age: 56 }; // new object created
 ```
-Here we don’t touch the original user — we make a copy with the change applied.
+Here we don’t touch the original user - we make a copy with the change applied.
 
-### 2. Separation of Data and Functions — “Keep logic and data independent.”
+### 2. Separation of Data and Functions - “Keep logic and data independent.”
 In OOP, **data and behavior** live together (inside objects).
 
-In FP, we separate them: functions take data as input and return new data — they don’t belong to the data.
+In FP, we separate them: functions take data as input and return new data - they don’t belong to the data.
 
 This makes code:
 * **Reusable** – one function can handle many kinds of data
@@ -197,16 +197,16 @@ const greet = (name) => `Hello, ${name}!`;
 console.log(greet("Lasse"));
 ```
 
-In FP, `greet` doesn’t belong to any object — it simply **takes input and returns output**.
+In FP, `greet` doesn’t belong to any object - it simply **takes input and returns output**.
 It can work with *any* data, not just a specific `user`.
 
-### 3. First-Class Functions — “Functions are just values.”
+### 3. First-Class Functions - “Functions are just values.”
 In JavaScript (and FP in general), functions are **first-class citizens**, meaning you can:
 * Assign them to variables
 * Pass them as arguments to other functions
 * Return them from other functions
 
-This allows **higher-order functions** — functions that operate *on* other functions — which is key to expressive, composable code.
+This allows **higher-order functions** - functions that operate *on* other functions - which is key to expressive, composable code.
 
 Example:
 ```js
@@ -224,7 +224,7 @@ const triple = multiplier(3);
 console.log(triple(5)); // 15
 ```
 
-Functions here behave like **data** — you can store, combine, and reuse them freely.
+Functions here behave like **data** - you can store, combine, and reuse them freely.
 
 ### Summary Table
 | Principle                            | Description                                     | Benefit                          |
@@ -233,12 +233,12 @@ Functions here behave like **data** — you can store, combine, and reuse them f
 | **Separation of Data and Functions** | Logic operates *on* data,<br>not *inside* it       | Reusable and testable code       |
 | **First-Class Functions**            | Functions can be passed, returned, and composed | Flexible and expressive programs |
 
-## Closures — Functions that “remember”
+## Closures - Functions that “remember”
 
-A closure is one of the most important — and sometimes most misunderstood — concepts in JavaScript.
+A closure is one of the most important - and sometimes most misunderstood - concepts in JavaScript.
 
 **In simple terms:**
-A closure happens when an inner function “remembers” the variables from the function where it was created — even after that outer function has finished running.
+A closure happens when an inner function “remembers” the variables from the function where it was created - even after that outer function has finished running.
 
 ### Basic Example
 ```js
@@ -264,11 +264,11 @@ console.log(counter()); // 3
 1. When you call `makeCounter()`, a new `count` variable is created inside it.
 2. `makeCounter()` returns the `inner function` (which increases `count`), but doesn’t destroy the variable.
 3. The returned function still has **access to `count`**, even though `makeCounter()` has finished running.
-4. That’s a **closure** — the function “closes over” its surrounding variables and keeps them alive.
+4. That’s a **closure** - the function “closes over” its surrounding variables and keeps them alive.
 
 #### Think of it like…
 
-A **backpack** — Every function carries a small “backpack” with it, containing the variables it needs from where it was created. Even when it’s used later, somewhere else in your code, it still has access to those values in its backpack.
+A **backpack** - Every function carries a small “backpack” with it, containing the variables it needs from where it was created. Even when it’s used later, somewhere else in your code, it still has access to those values in its backpack.
 
 ### Why Closures Matter in Functional Programming
 Closures allow functions to:
@@ -286,7 +286,7 @@ console.log(triple(5)); // 15
 Here’s what’s happening:
 * `multiplier(3)` returns a `function: (x) => x * n`
 * Even though `n` is no longer in scope after `multiplier` has finished running...
-* ...the returned function **remembers** `n` — in this case, `3`
+* ...the returned function **remembers** `n` - in this case, `3`
 
 That “remembering” is exactly what a closure is.
 
@@ -302,7 +302,7 @@ Each returned function keeps its own copy of `n`, thanks to closure.
 
 [Codepen](https://codepen.io/xiaolasse/pen/dPGmXVy?editors=0012)
 
-### Example — Function Factory
+### Example - Function Factory
 
 ```js
 function makeMultiplier(factor) {
@@ -318,7 +318,7 @@ console.log(double(5)); // 10
 console.log(triple(5)); // 15
 ```
 
-Each returned function **remembers** its own `factor` — even though `makeMultiplier` has long finished.
+Each returned function **remembers** its own `factor` - even though `makeMultiplier` has long finished.
 This is functional programming in action: **functions creating new functions with remembered data**.
 
 
@@ -327,11 +327,11 @@ This is functional programming in action: **functions creating new functions wit
 <small>PS! Did you notice that this example is identical to the one above (difference is that this use the `function` keyword, the above is an arrow function?)</small>
 
 ### Example: Day Planner (Closure with Two Functions)
-We’ll make a function that helps you **store a daily task** — and gives you two functions:
+We’ll make a function that helps you **store a daily task** - and gives you two functions:
 * One to **get** today’s task
 * One to **change** it
 
-The task is **stored in a closure**, so it’s private — not accessible directly.
+The task is **stored in a closure**, so it’s private - not accessible directly.
 
 ```js
 function createPlanner(initialTask) {
@@ -523,11 +523,11 @@ console.log(total); // 60
 ```
 * The callback receives an **accumulator** (`sum`) and the **current value** (`price`).
 * The `0` is the initial value.
-* Returns one result — often used for sums, counts, or building new objects.
+* Returns one result - often used for sums, counts, or building new objects.
 
 #### Example with Objects
 
-You can also use these methods on arrays of objects — very common in real projects.
+You can also use these methods on arrays of objects - very common in real projects.
 ```js
 const products = [
   { name: "Book", price: 10 },
@@ -547,11 +547,11 @@ console.log(totalExpensive); // 43.75
 Each step:
 1. `.filter()` selects items,
 2. `.map()` transforms them,
-3. `.reduce()` combines them — showing function composition in action.
+3. `.reduce()` combines them - showing function composition in action.
 
 #### Chaining
 
-In the example above, we’re **chaining multiple higher-order functions** — each method (`filter`, `map`, `reduce`) is itself a **HOF**, and we combine them in sequence so the output of one becomes the input of the next:
+In the example above, we’re **chaining multiple higher-order functions** - each method (`filter`, `map`, `reduce`) is itself a **HOF**, and we combine them in sequence so the output of one becomes the input of the next:
 ```js
 const totalExpensive = products
   .filter(p => p.price > 5)       // HOF #1 → filters items
@@ -587,7 +587,7 @@ We'll look at a few of these, and some others in a moment.
 | **`map` / `filter` / `reduce`** | Common higher-order functions for transforming arrays |
 
 ### Other Common Higher-Order Functions
-All of the following methods also **take callback functions**** — that’s what makes them **higher-order**.
+All of the following methods also **take callback functions**** - that’s what makes them **higher-order**.
 
 <!--_footer: "** There's an exception, we'll get back to that..."-->
 
@@ -641,20 +641,20 @@ console.log(fruits);     // ["apple", "banana", "cherry", "date"]
 **Explanation:**
 * Takes `start` and `end` indices (`end` not included).
 * Returns a **shallow copy** of that segment.
-* Doesn’t modify the original — fits perfectly with FP principles.
+* Doesn’t modify the original - fits perfectly with FP principles.
 
-***Note**: `.slice()` doesn’t use a callback — so it’s not a HOF by definition, but it’s often mentioned together with FP-friendly array methods because it’s pure and non-mutating.*
+***Note**: `.slice()` doesn’t use a callback - so it’s not a HOF by definition, but it’s often mentioned together with FP-friendly array methods because it’s pure and non-mutating.*
 
 #### `.sort()` – Order Elements in an Array
 
-**Purpose**: Sorts elements **in place** — but can be made functional by copying first.
+**Purpose**: Sorts elements **in place** - but can be made functional by copying first.
 ```js
 const numbers = [5, 12, 3, 9];
 
 const sorted = [...numbers].sort((a, b) => a - b);
 
 console.log(sorted);  // [3, 5, 9, 12]
-console.log(numbers); // [5, 12, 3, 9] — unchanged
+console.log(numbers); // [5, 12, 3, 9] - unchanged
 ```
 **Explanation:**
 * The callback `(a, b)` compares two elements.
@@ -692,7 +692,7 @@ const sorted = numbers.toSorted((a,b) => a - b);
 The `toSorted()` method of Array instances is the copying version of the `sort()` method. It **returns a new array with the elements sorted**. 
 
 #### Why this is important (especially for FP)
-* Mutating the original array (as `sort()` does) violates immutability — a core FP principle.
+* Mutating the original array (as `sort()` does) violates immutability - a core FP principle.
 * Using `toSorted()` helps you write **pure functions**: no hidden side-effects on your inputs.
 * It improves predictability, easier debugging, easier reasoning about state changes.
 * Prior to `toSorted()`, the common workaround was:
@@ -725,12 +725,12 @@ console.log(sortedByPrice);
 | [`toSpliced()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced) | `splice()` | Returns a new array with items added/removed, without changing the original |
 | [`with(index, value)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/with) | direct index assignment | Returns a copy with one element replaced |
 
-All these are **pure, non-mutating** versions — perfect for functional programming.
+All these are **pure, non-mutating** versions - perfect for functional programming.
 
 #### A few caveats
 * `toSorted()` is relatively new: [The MDN docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted) note “Baseline 2023” for support. 
 * It returns a *shallow copy*, so if the array contains objects and you mutate an object inside, you’re still mutating the object not the array reference.
-* If you’re targeting older environments, you might not have native support yet — fallback to `[...array].sort()` or a [polyfill](https://developer.mozilla.org/en-US/docs/Glossary/Polyfill).
+* If you’re targeting older environments, you might not have native support yet - fallback to `[...array].sort()` or a [polyfill](https://developer.mozilla.org/en-US/docs/Glossary/Polyfill).
 
 That said, there is support for `toSorted()`, and above mentioned `toReversed()`, `toSpliced()` and `with()`, in all _modern_ browsers and Node 20+.
 
@@ -741,22 +741,22 @@ These two concepts are about breaking down functions and reusing them more flexi
 
 <small style="display: block; border: 1px solid gray; margin-top: 20px; padding: 10px 20px; background: #def">
 
-### The name “Currying” comes from a person — not curry, the food
+### The name “Currying” comes from a person - not curry, the food
 It’s named after the American logician and mathematician
 **Haskell Brooks Curry (1900 – 1982).**
 
-He worked on the theory of combinatory logic — a mathematical foundation that later influenced functional programming languages like *Haskell* (which is also named after him).
+He worked on the theory of combinatory logic - a mathematical foundation that later influenced functional programming languages like *Haskell* (which is also named after him).
 
 #### What he formalized
 Haskell Curry (and others before him, like Moses Schönfinkel) explored the idea that:
 > any function taking multiple arguments can be rewritten as a chain of single-argument functions.
 
 So, a function `f(a, b)` can be expressed as `f(a)(b)`.
-That transformation process is what we now call **currying** — in his honor.
+That transformation process is what we now call **currying** - in his honor.
 
 </small>
 
-### Currying — “One parameter at a time”
+### Currying - “One parameter at a time”
 
 Currying means transforming a function that takes **many arguments** into a chain of functions that each take **one argument**.
 
@@ -800,18 +800,18 @@ console.log(addTwo(10)); // 12
 4. When we call `addTwo(5)` → it runs `a + b` → `2 + 5` = 7
     When we call `addTwo(10)` → `2 + 10` = 12
 
-This lets you **reuse** specialized versions of a function — a key FP idea.
+This lets you **reuse** specialized versions of a function - a key FP idea.
 
 #### In plain words:
 * `addCurried(2)` creates a customized function that always adds `2`.
-* This is powerful because you can reuse `addTwo` anywhere — it’s a tiny, specialized function built from a more general one.
+* This is powerful because you can reuse `addTwo` anywhere - it’s a tiny, specialized function built from a more general one.
 
 That’s one of the main ideas in functional programming:
 * Build small, reusable, specialized functions from more general ones.
 
 #### Sidenote: Currying and Closures
 
-Currying **relies on closures** to work — every time you call a curried function, it returns another function that **remembers** the earlier arguments through a closure.
+Currying **relies on closures** to work - every time you call a curried function, it returns another function that **remembers** the earlier arguments through a closure.
 
 So you can think of it like this: **Currying = nesting + closures**
 
@@ -831,7 +831,7 @@ console.log(addTwo(10)); // 12
 ```
 Here, the inner function forms a closure around `a`, allowing the curried structure to “remember” it even after the first function has finished.
 
-### Partial Application — “Some arguments now, the rest later”
+### Partial Application - “Some arguments now, the rest later”
 
 **Partial application** is similar, but slightly looser:
 You call a function with **some** of its parameters now, and get back a new function expecting the rest.
@@ -852,7 +852,7 @@ function partialMultiply(a) {
 const double = partialMultiply(2);
 console.log(double(3, 4)); // 24 (2 * 3 * 4)
 ```
-Here, `partialMultiply(2)` creates a new function where the first argument is fixed — that’s **partial application**.
+Here, `partialMultiply(2)` creates a new function where the first argument is fixed - that’s **partial application**.
 
 #### Step-by-step:
 1. **`partialMultiply(2)` is called**
@@ -868,7 +868,7 @@ Here, `partialMultiply(2)` creates a new function where the first argument is fi
 **In plain words:**
 `partialMultiply(2)` **pre-fills** one argument `(a = 2)` and gives you back a reusable function that multiplies any two other numbers by 2.
 
-This is **partial application** — it uses a **closure** to remember preset arguments, letting you create flexible, reusable helper functions.
+This is **partial application** - it uses a **closure** to remember preset arguments, letting you create flexible, reusable helper functions.
 
 ### Quick Summary
 
@@ -879,7 +879,7 @@ This is **partial application** — it uses a **closure** to remember preset arg
 
 ### Practical Example 1: Currying with `map()`
 
-Imagine you want to **add tax** to a list of prices — and the tax rate might change.
+Imagine you want to **add tax** to a list of prices - and the tax rate might change.
 
 Instead of hardcoding it each time:
 ```js
@@ -905,7 +905,7 @@ console.log(taxed); // [125, 250, 375]
 
 **Why it’s nice:**
 * You can easily reuse `addTax(0.25)` elsewhere.
-* It’s *pure* — no side effects, doesn’t modify data.
+* It’s *pure* - no side effects, doesn’t modify data.
 * It works naturally with higher-order functions like `.map()`.
 
 ### Practical Example 2: Partial Application with Event Handlers
@@ -933,7 +933,7 @@ button.addEventListener("click", handleSaveClick);
 
 Why it’s nice:
 * You “preload” data (`"save"`) into a function.
-* Keeps code cleaner — especially in loops or many buttons.
+* Keeps code cleaner - especially in loops or many buttons.
 
 > We'll get back to `bind()` a little later in this lesson.
 
@@ -943,7 +943,7 @@ Why it’s nice:
 | ------- | ------------- | ------------ |
 | **Currying** | Makes functions more composable and reusable; allows building complex behavior from smaller pieces | Create reusable logic for `.map()`, `.filter()`, etc. |
 | **Partial Application** | Lets you “preset” some arguments and reuse the function later | Pre-fill parameters for event handlers or utility functions |
-| **Both** | Promote **pure**, **reusable**, and **modular** functions — core FP principles | Encourage cleaner, more declarative, and maintainable code  |
+| **Both** | Promote **pure**, **reusable**, and **modular** functions - core FP principles | Encourage cleaner, more declarative, and maintainable code  |
 
 ## Functions as Objects
 In JavaScript, **functions are special kinds of objects**.
@@ -952,7 +952,7 @@ That means:
 * You can store them in variables
 * Pass them around as arguments
 * Return them from other functions
-  …but also — just like any other object —
+  …but also - just like any other object -
   they can have **properties and methods**.
 
 **Example:**
@@ -973,7 +973,7 @@ Every function object automatically has three powerful built-in methods:
 * [`apply()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply), and 
 * [`bind()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind) 
 
-— they all control **how a function is executed** and **what `this` refers to** inside it.
+- they all control **how a function is executed** and **what `this` refers to** inside it.
 
 Let’s go through them one by one:
 
@@ -1017,7 +1017,7 @@ This is especially useful when your arguments are already stored in an array.
 
 #### 3. `bind()`
 
-**Purpose**: Doesn’t call the function right away — instead, it **creates a new function** where `this` (and optionally some arguments) are permanently fixed.
+**Purpose**: Doesn’t call the function right away - instead, it **creates a new function** where `this` (and optionally some arguments) are permanently fixed.
 ```js
 function greet(greeting) {
   console.log(`${greeting}, I'm ${this.name}`);
@@ -1043,6 +1043,6 @@ It’s great for callbacks and event handlers where you don’t want to lose con
 
 #### Why this matters in Functional Programming
 * It proves that **functions are objects**, not just “pieces of code.”
-* You can **manipulate** and reuse functions dynamically —
+* You can **manipulate** and reuse functions dynamically -
 for example, pre-binding context or arguments.
 * They enable powerful patterns like **partial application**, **method borrowing**, and **callback composition**.
