@@ -6,7 +6,7 @@
 
 ## Promise
 
-A **Promise** in JavaScript is an object that represents the eventual completion (or failure) of an asynchronous operation — and its resulting value.
+A **Promise** in JavaScript is an object that represents the eventual completion (or failure) of an asynchronous operation - and its resulting value.
 
 In simpler terms, it’s a way to handle things that take time (like network requests) without blocking the rest of the code.
 
@@ -32,11 +32,11 @@ promise
   .catch(error => console.error(error)); // runs if rejected
 ```
 
-This pattern helps you avoid “callback hell” and makes async code easier to reason about — especially when chaining or combining multiple async tasks.
+This pattern helps you avoid “callback hell” and makes async code easier to reason about - especially when chaining or combining multiple async tasks.
 
 ## XHR - a brief history lesson
 
-Before Promises (and before [`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch)), data was often fetched using **[XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) (XHR)** — one of the oldest ways to make HTTP requests in JavaScript.
+Before Promises (and before [`fetch`](https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch)), data was often fetched using **[XMLHttpRequest](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) (XHR)** - one of the oldest ways to make HTTP requests in JavaScript.
 
 A typical XHR flow relied on **callbacks** and `onreadystatechange` events, which made code harder to read and maintain.
 
@@ -69,7 +69,7 @@ Explanation:
 3. We then parse the JSON text (`xhr.responseText`) into a JS object and use it.
 4. We need to actually send the request
 
-[It works](https://codepen.io/xiaolasse/pen/VYaLxLb?editors=0012) — but it’s clunky.
+[It works](https://codepen.io/xiaolasse/pen/VYaLxLb?editors=0012) - but it’s clunky.
 
 ## Using a Promise and XHR to make a simpler `fetch`
 
@@ -151,7 +151,7 @@ getData("https://jsonplaceholder.typicode.com/todos/3")
 ### Sidnote: Why we don’t need `readyState` anymore:
 In older XHR code, people used `xhr.onreadystatechange` and checked `xhr.readyState === 4` to know when the request had finished.
 
-However, `xhr.onload` is a modern event that only fires once — when the request *is complete*.
+However, `xhr.onload` is a modern event that only fires once - when the request *is complete*.
 
 So `readyState` is redundant here: `onload` already means “we’re done, and here’s the response.”
 
@@ -173,14 +173,14 @@ async function fetchData(url) {
 fetchData("https://jsonplaceholder.typicode.com/todos/1");
 ```
 
-So this version is now essentially a modern, Promise-wrapped XHR — simple, readable, and solid.
+So this version is now essentially a modern, Promise-wrapped XHR - simple, readable, and solid.
 
 [See it live here, with both chained and `async` usage.](https://codepen.io/xiaolasse/pen/QwNbrQX?editors=0012)
 
 
 ## So, as promised (pun intended) some Amiibos
 
-The **Amiibo API** (available at https://www.amiiboapi.com) is a free, public web API that provides detailed information about Nintendo’s **Amiibo** figurines and cards — including their characters, game series, release dates, and images.
+The **Amiibo API** (available at https://www.amiiboapi.com) is a free, public web API that provides detailed information about Nintendo’s **Amiibo** figurines and cards - including their characters, game series, release dates, and images.
 
 It returns data in JSON format, which makes it easy to use with JavaScript apps, web projects, and teaching examples.
 
@@ -213,7 +213,7 @@ It returns data in JSON format, which makes it easy to use with JavaScript apps,
 }
 ```
 
-It’s a simple, read-only REST API — great for practicing HTTP requests, JSON parsing, and DOM rendering in frontend projects without needing authentication or API keys.
+It’s a simple, read-only REST API - great for practicing HTTP requests, JSON parsing, and DOM rendering in frontend projects without needing authentication or API keys.
 
 #### Sidenote about the Amiibo id
 
@@ -248,7 +248,7 @@ Example (Luigi figure):
 
 #### Sidenote: Why `defer` in the HTML matters
 * Because the script tag uses `defer`, the browser parses HTML first, then executes `main.js`.
-* That guarantees elements like `<ul id="amiibo-list">` exist before `renderAmiiboList` runs — no need for `DOMContentLoaded` handlers.
+* That guarantees elements like `<ul id="amiibo-list">` exist before `renderAmiiboList` runs - no need for `DOMContentLoaded` handlers.
 
 ### 2. Then add `main.js` file: 
 
@@ -309,7 +309,7 @@ async function loadAmiibos() {
 loadAmiibos();
 ```
 
-**Note**: The AmiiboAPI doesn’t return the array by itself — it wraps it inside an object.
+**Note**: The AmiiboAPI doesn’t return the array by itself - it wraps it inside an object.
 
 When you fetch from https://www.amiiboapi.com/api/amiibo/?character=Luigi,
 the response looks like this (simplified):
@@ -327,7 +327,7 @@ To reach the actual list of amiibo items, you have to access its `amiibo` proper
 ```js
 data.amiibo
 ```
-That’s the array — and that’s what we want to loop through.
+That’s the array - and that’s what we want to loop through.
 
 If the API instead returned a bare array (like `[ {…}, {…} ]`),  
 you could just write `data.forEach(...)`.  
