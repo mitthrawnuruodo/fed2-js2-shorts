@@ -1361,6 +1361,22 @@ document.querySelector('#genre-filter')?.addEventListener('change', (event: Even
 
 ## Further reading
 
-- MDN: Destructuring assignment
-- MDN: Spread syntax and Rest parameters
-- MDN: `Array.prototype.reduce()`, `flatMap()`, `at()`, `with()`, `toSorted()`
+**Destructuring, rest and spread**
+
+- [Destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring) - MDN. The reference for everything in Jobs 1 and 2. Note the distinction it draws between binding patterns and assignment patterns, which is why the swap in Exercise 2 needs its semicolon.
+- [Spread syntax (`...`)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) - MDN. Includes the point that all spread copies are shallow, which matters the moment your data nests.
+- [Rest parameters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters) - MDN. The `...` in a function signature, as opposed to in a pattern.
+
+**Array methods**
+
+- [`Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) - MDN. Worth opening for one thing in particular: the table pairing each mutating method with its copying alternative (`sort` with `toSorted`, `splice` with `toSpliced`, and so on). That table is Job 5 in a single screen.
+- [`reduce()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce) - MDN.
+- [`flatMap()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap) - MDN.
+- [`at()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/at) - MDN.
+- [`with()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/with) - MDN.
+- [`toSorted()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted) - MDN.
+
+**If you opened the TypeScript blocks**
+
+- [Everyday Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html) - TypeScript Handbook. Covers interfaces, optional properties and the object types used throughout this lesson.
+- [TSConfig reference: `lib`](https://www.typescriptlang.org/tsconfig/lib.html) - the setting to change when `with()` and `toSorted()` are underlined in red.
