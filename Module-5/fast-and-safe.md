@@ -3,7 +3,7 @@
 Two audits of the same noticeboard.
 
 **Prerequisites:** `fetch`, DOM manipulation, array methods, ES modules  
-**Time:** about 60 minutes, plus the self-study task
+**Time:** about 75 minutes for the two audits and the exercises, plus the self-study task
 
 ---
 
@@ -397,7 +397,16 @@ if (href) {
 contact.textContent = `Contact ${listing.seller}`;
 ```
 
-Note the shape of it. We are not looking for bad values, we are **allowing known-good ones**. `new URL()` does the parsing, so `jAvAsCrIpT:`, `java\nscript:`, `%6a%61vascript:` and the rest of the bestiary all resolve to the same protocol and all fail the same check. Anything you write yourself with `startsWith` or a regex will miss a case, and you will not find out which one.
+Note the shape of it. We are not looking for bad values, we are **allowing known-good ones**. `new URL()` does the parsing, and it handles two different classes of trick with the same three lines:
+
+- **Anything that is a scheme gets normalised into one.** Case, surrounding whitespace and embedded control characters all disappear, so `jAvAsCrIpT:`, `java\nscript:` and `  javascript:` come back with protocol `javascript:` and fail the check together.
+- **Anything that is not a recognisable scheme is resolved against your own origin.** A percent-encoded attempt such as `%6a%61vascript:alert(1)` is not a scheme at all, so it becomes a harmless path on your own site. `safeUrl` returns a non-empty string for it, and that is the right answer: nothing there can execute. If you test that payload and see a URL come back, the check has not failed.
+
+Anything you write yourself with `startsWith` or a regex will miss a case from one of those classes, and you will not find out which one.
+
+One thing this deliberately does allow: `//evil.example/x` resolves to `https://evil.example/x` and passes. That is by design, since a contact link is meant to point somewhere else. It is also why `referrerPolicy` is on the image rather than left to chance - the URL check controls what can *execute*, not who you are talking to.
+
+The placeholder images in the self-study task demonstrate this in one click. `safeUrl` approves `https://picsum.photos/...`, and picsum then redirects to `fastly.picsum.photos`, so the bytes arrive from a host that never appeared in your data. A URL check validates the address you were handed, not where it forwards you.
 
 ### Finding 3: the token in `localStorage`
 
@@ -449,7 +458,7 @@ That does not make workers a sandbox for hostile code - a worker can still `fetc
 
 The direction of trust does reverse, though. Whatever the worker sends back arrives at your `onmessage` handler and usually goes straight into the page. Treat it exactly like an API response - which is to say, do not `innerHTML` it.
 
-### One more: dynamic import with a variable path
+### Finding 6: dynamic import with a variable path
 
 The map view was loaded like this:
 
@@ -679,7 +688,7 @@ async function createListing(listing) {
 
 **3. CORS.** The API must send `Access-Control-Allow-Credentials: true`, and `Access-Control-Allow-Origin` must now be the exact origin - `https://noticeboard.example.com`. The wildcard `*` is forbidden with credentialed requests, and the browser will reject the response outright. This trips up nearly everyone the first time, because the same header worked fine five minutes earlier.
 
-**4. Traded attacks.** It **closes** token exfiltration: `HttpOnly` means an injected script cannot read the credential and post it to a server abroad, so the attacker cannot keep using the account after the user closes the tab. It **opens** CSRF, because a credential the browser attaches on its own is attached whoever caused the request - which is what `SameSite` and, for anything more sensitive, a CSRF token are for. And it **leaves untouched** the ability of an injected script to act as the user right now: the cookie rides along on every request your page makes, including the ones the attacker's code makes. If you wrote "it fixes XSS", read Finding 3 again.
+**4. Traded attacks.** It **closes** token exfiltration: `HttpOnly` means an injected script cannot read the credential and post it to a server abroad, so the attacker cannot keep using the account after the user closes the tab. It **opens** CSRF, because a credential the browser attaches on its own is attached whoever caused the request - which is what `SameSite` and, for anything more sensitive, a CSRF token are for. And it **leaves untouched** the ability of an injected script to act as the user right now: the cookie rides along on every request your page makes, including the ones the attacker's code makes. If you wrote "it fixes XSS", read Finding 3 of the security round again.
 
 **5. `SameSite` across subdomains.** `noticeboard.example.com` and `api.example.com` are different **origins** but the same **site**, because `SameSite` is evaluated against the registrable domain, `example.com`. So this is a same-site request and both `Lax` and `Strict` will send the cookie.
 
@@ -817,51 +826,279 @@ statsWorker.onmessage = (event: MessageEvent<StatsResponse>) => {
 
 ## Self-study task: audit and repair
 
-You inherit a working noticeboard. Your job is not to rewrite it. It is to **audit it, fix it, and write down what you found** - which is what this work looks like in a real team.
+You inherit a working noticeboard. Your job is not to rewrite it. It is to **audit it, fix it, and write down what you found**, which is what this work actually looks like in a team.
 
-### Brief
+Six things are wrong with the code below. Some are performance problems, some are security problems, and some are both. Find them before you open the solution.
 
-Build or take a single-page noticeboard with:
+### Setup
 
-- a board of at least 300 listings from a local JSON file
-- a search box that filters as you type
-- images on every card
-- a "statistics" button that does something CPU-heavy over the whole list
-- a panel that is only shown when a button is pressed
-- a fake login that stores a token and a fake authenticated `fetch`
+`index.html`:
 
-Seed the data with at least three hostile listings. Write the payloads yourself; do not copy the ones in this lesson.
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Noticeboard</title>
+  </head>
+  <body>
+    <h1>Block C noticeboard</h1>
+    <input id="search" placeholder="Search listings...">
+    <button id="runStats">Check for duplicates</button>
+    <button id="showPanel">Show panel</button>
+    <div id="stats"></div>
+    <div id="panel"></div>
+    <div id="board"></div>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
+```
 
-### Deliverable 1: the audit table
+`main.js`:
+
+```js
+// The version you inherit. Three of these listings were not posted in good faith.
+
+const listings = [];
+
+for (let i = 0; i < 300; i++) {
+  listings.push({
+    id: `L-${i}`,
+    title: i % 9 === 0 ? "Desk lamp" : `Item ${i}`,
+    body: "Collect from block C, any evening.",
+    price: i * 5,
+    seller: `user${i}`,
+    image: `https://picsum.photos/seed/${i}/320/200`,
+    contact: `https://example.com/u/user${i}`
+  });
+}
+
+listings.push({
+  id: "L-901",
+  title: `Free sofa <img src=x onerror="document.title='pwned-1'">`,
+  body: "Good condition.",
+  price: 0,
+  seller: "anon",
+  image: "https://picsum.photos/seed/sofa/320/200",
+  contact: "https://example.com/u/anon"
+});
+
+listings.push({
+  id: "L-902",
+  title: "Bike lights",
+  body: `Barely used <svg onload="document.title='pwned-2'"></svg>`,
+  price: 80,
+  seller: "anon",
+  image: "https://picsum.photos/seed/lights/320/200",
+  contact: "https://example.com/u/anon"
+});
+
+listings.push({
+  id: "L-903",
+  title: "Kettle",
+  body: "Works fine.",
+  price: 50,
+  seller: "anon",
+  image: "https://picsum.photos/seed/kettle/320/200",
+  contact: "javascript:document.title='pwned-3'"
+});
+
+const board = document.querySelector("#board");
+const search = document.querySelector("#search");
+const statsPanel = document.querySelector("#stats");
+
+function render(list) {
+  board.innerHTML = "";
+
+  for (const listing of list) {
+    board.innerHTML += `
+      <article class="card">
+        <h2>${listing.title}</h2>
+        <p>${listing.body}</p>
+        <p class="price">${listing.price} kr</p>
+        <img src="${listing.image}" alt="">
+        <a href="${listing.contact}">Contact ${listing.seller}</a>
+      </article>
+    `;
+  }
+}
+
+search.addEventListener("input", () => {
+  const term = search.value.toLowerCase();
+  render(listings.filter((l) => l.title.toLowerCase().includes(term)));
+});
+
+document.querySelector("#runStats").addEventListener("click", () => {
+  statsPanel.textContent = "Checking...";
+
+  const duplicates = [];
+  for (let i = 0; i < listings.length; i++) {
+    for (let j = i + 1; j < listings.length; j++) {
+      if (listings[i].title === listings[j].title) {
+        duplicates.push([listings[i].id, listings[j].id]);
+      }
+    }
+  }
+
+  statsPanel.textContent = `Found ${duplicates.length} duplicates.`;
+});
+
+document.querySelector("#showPanel").addEventListener("click", async () => {
+  const name = new URLSearchParams(location.search).get("panel") || "map";
+  const module = await import(`./panels/${name}.js`);
+  module.render(document.querySelector("#panel"));
+});
+
+function login(token) {
+  localStorage.setItem("accessToken", token);
+}
+
+function authedFetch(url) {
+  return fetch(url, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` }
+  });
+}
+
+render(listings);
+login("TOKEN-abc123");
+```
+
+The `panels/` directory does not exist, so the "Show panel" button will fail. Leave it failing; the bug there is not the missing file.
+
+### The task
+
+1. **Measure first.** Time the initial `render` with `performance.now()`, not by eye. The placeholder images arrive long after `render` has finished, so "the page still looks empty" is telling you about the network, not about the function you are timing. Then count how many times `render` runs when you type "lamp", and click "Check for duplicates" and try to scroll while it works.
+2. **Find the payloads.** Three listings are hostile. Load the page and watch the browser tab title. Work out which position each payload exploits, and which one does nothing until you click it.
+3. **Write the audit.** One row per finding:
+
+| # | Finding | Performance, security, or both | Evidence | Fix | Verified by |
+|---|---|---|---|---|---|
+
+   *Evidence* is a number or a payload that fires. Not "this looks slow". *Verified by* is how you know it is fixed: the number afterwards, or the payload now sitting on the page as visible text.
+
+4. **Repair it**, so every "Verified by" is true.
+5. **Write one paragraph** about a decision where the two goals pulled against each other, what you chose, and what would change your mind.
+
+Aim for six findings. If you get to the end without a single "both", look again at how the cards are built.
+
+<details>
+<summary><strong>Solution: the audit</strong></summary>
+
+Numbers below are from a mid-range laptop. Yours will differ; what matters is the direction and the ranking.
 
 | # | Finding | Category | Evidence | Fix | Verified by |
 |---|---|---|---|---|---|
+| 1 | `board.innerHTML +=` inside the render loop | **Both** | 303 cards take several hundred ms and the cost grows with the square of the list. Same line parses three attacker payloads into the DOM | `createElement` + `textContent`, batched through a `DocumentFragment`, one `replaceChildren` | Render time drops by roughly an order of magnitude; `document.title` stays put; payload text is visible on the card |
+| 2 | Search renders on every keystroke | Performance | Typing "lamp" runs `render` 4 times | `debounce(..., 250)` | Counter reads 1 |
+| 3 | Images have no `width`, `height` or `loading` | Performance | Page jumps as images arrive; all 303 requested at once | Set all three on the element | No layout shift; Network tab shows a handful of image requests, not 303. Picsum answers each one with a redirect to its CDN, so expect two entries per image |
+| 4 | `contact` used as an `href` unchecked | Security | `L-903` sets the tab title when its link is clicked | `safeUrl()`, and no `href` at all if it fails | Link is inert; "Contact anon" still renders |
+| 5 | Duplicate scan runs on the main thread | Performance | 303 listings is 45,753 comparisons and the page cannot be scrolled during it. Note it finds 561 pairs, since 34 listings share the title "Desk lamp" | Move the loop into a Web Worker, `postMessage` the result back | Page scrolls throughout; the count is unchanged |
+| 6 | `import()` with a path from the query string | Security | `?panel=../../../anything` is a module path the visitor controls | An `Object.hasOwn` allow-list of literal import paths | Unknown names load nothing; the bundler can now split the two real panels |
 
-- **Category** is one of: performance, security, or **both**.
-- **Evidence** is a measurement or a working payload. Not "this looks slow". A number, or a screenshot of the alert.
-- **Verified by** is how you know it is fixed - the number afterwards, or the payload now rendering as visible text.
+**The `localStorage` token is not a finding.** It is a deliberate, defensible choice - see Finding 3 in the security round. Writing it up as a bug means you have not read that section. Writing it up as *a risk you are accepting on a stated condition* is exactly right, and it belongs in step 5 rather than in the table.
 
-Minimum eight findings, of which at least three must be **both**.
+**Which payload does what.** `L-901` exploits the `<h2>` interpolation, `L-902` the `<p>` interpolation, and both fire on page load. `L-903` is the `href`, and it does nothing until somebody clicks. That last one is the important one: it is still live after you have rewritten the render function, which is precisely when everyone stops looking.
 
-### Deliverable 2: the repaired code
+**If you tried `<script>alert(1)</script>` and saw nothing**, that is expected and it does not mean the code is safe. `innerHTML` does not execute injected `<script>` tags. `onerror` and `onload` handlers work perfectly, which is why the payloads above use them.
 
-Every finding in the table is fixed, and every `Verified by` column is true.
+</details>
 
-### Deliverable 3: one paragraph on a trade-off
+<details>
+<summary><strong>Solution: the repaired render</strong></summary>
 
-Find one decision in your own code where performance and security pulled in different directions. Say what you chose, what it cost you, and what would have to change for you to choose the other way.
+The rest of the repair follows the lesson body directly - `debounce` from Finding 2 of the performance round, the worker from Finding 4 of the same round, the allow-list from Finding 6 of the security round. The render function is the part worth writing out, because it is the one that fixes two categories at once.
 
-This paragraph is the actual assessment criterion. Anyone can apply a fix from a lesson. Recognising that two goals are in tension and choosing deliberately is the part that transfers to work you have not been taught yet.
+```js
+function safeUrl(value) {
+  if (typeof value !== "string" || value.trim() === "") return "";
 
-### Marks are lost for
+  try {
+    const url = new URL(value, window.location.origin);
+    return url.protocol === "https:" ? url.href : "";
+  } catch {
+    return "";
+  }
+}
 
-- A finding with no evidence.
-- Fixing something you never measured.
-- Blocking `<script>` with a string check and calling XSS solved.
-- An `<a href>` that renders straight from the data.
-- Getting to the end without a single **both**. Look again at how you build the DOM.
+function makeCard(listing) {
+  const card = document.createElement("article");
+  card.className = "card";
 
----
+  const title = document.createElement("h2");
+  title.textContent = listing.title;
+
+  const body = document.createElement("p");
+  body.textContent = listing.body;
+
+  const price = document.createElement("p");
+  price.className = "price";
+  price.textContent = `${listing.price} kr`;
+
+  const image = document.createElement("img");
+  image.src = safeUrl(listing.image);
+  image.alt = "";
+  image.loading = "lazy";
+  image.width = 320;
+  image.height = 200;
+  image.referrerPolicy = "no-referrer";
+
+  const contact = document.createElement("a");
+  const href = safeUrl(listing.contact);
+  if (href) {
+    contact.href = href;
+  }
+  contact.textContent = `Contact ${listing.seller}`;
+
+  card.append(title, body, price, image, contact);
+  return card;
+}
+
+function render(list) {
+  const fragment = document.createDocumentFragment();
+
+  for (const listing of list) {
+    fragment.append(makeCard(listing));
+  }
+
+  board.replaceChildren(fragment);
+}
+```
+
+And the panel button:
+
+```js
+const PANELS = {
+  map: () => import("./panels/map.js"),
+  stats: () => import("./panels/stats.js")
+};
+
+document.querySelector("#showPanel").addEventListener("click", async () => {
+  const name = new URLSearchParams(location.search).get("panel") || "map";
+
+  if (!Object.hasOwn(PANELS, name)) {
+    document.querySelector("#panel").textContent = "Unknown panel.";
+    return;
+  }
+
+  const module = await PANELS[name]();
+  module.render(document.querySelector("#panel"));
+});
+```
+
+**How to confirm it worked.** Reload with all three hostile listings still in the array. The tab title should stay as you set it, "Free sofa &lt;img src=x onerror=..." should be sitting on a card as readable text, and the "Contact anon" on `L-903` should be plain text with nothing to click. Then type "lamp" and check the render counter says 1, and click the duplicate button and confirm you can still scroll.
+
+</details>
+
+<details>
+<summary><strong>Solution: a sample trade-off paragraph</strong></summary>
+
+One answer of many. Yours should name a decision from your own repair, not repeat this one.
+
+> The duplicate scan moved into a Web Worker, which meant `postMessage`-ing the whole 303-listing array across the thread boundary. `postMessage` structured-clones its argument, so this copies the entire dataset on every click - measurable waste that the main-thread version did not have. I accepted it because a few hundred small objects clone in well under the time the scan itself takes, and an unresponsive page is a cost the user actually feels while a redundant copy is not. What would change my mind: a list an order of magnitude larger, or listings carrying image blobs rather than URLs. At that point I would send only the fields the scan needs, or move to a transferable `ArrayBuffer`, and the extra complexity would be worth it.
+
+What makes this a trade-off paragraph rather than a summary: it names a cost that the fix introduced, not just the problem the fix solved, and it states a condition under which the answer flips. "I used a Web Worker so the page stays responsive" is a description of a fix. It is not this.
+
+</details>
 
 ## Further reading
 
