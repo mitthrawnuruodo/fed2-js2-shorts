@@ -11,9 +11,7 @@ Use the checklist below **before**, **during**, and **after** development.
 Before writing a single line of code:
 
 * Read the **entire assignment text from top to bottom**
-* Read it **again**
-* Highlight or note:
-
+* Read it **again** and highlight or note:
   * Mandatory requirements
   * Optional / bonus features
   * Explicit constraints (tools, frameworks, APIs, time limits)
