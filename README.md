@@ -25,6 +25,7 @@ This is a repo with extra learning material for JavaScript 2 at Noroff
 ## Module 4 - Object-Oriented Programming vs Frunctional Programming
 
 * [Object oriented programming](Module-4/oop.md)
+* Ultra-shorts:
     * [Methods](Module-4/Ultra-shorts/Methods.md)
     * [Inheritance](Module-4/Ultra-shorts/Inheritance.md)
 * [Functional programming](Module-4/functional-programming.md)
