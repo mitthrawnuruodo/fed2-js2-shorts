@@ -2,27 +2,24 @@
 
 This is a repo with extra learning material for JavaScript 2 at Noroff
 
-## Reptition/Kickstart
+## Module 1: Typescript and Destructuring
 
 * [Getting Started with TypeScript](Module-0/getting-started-with-typescript.md)
-
-## Module 1 - Typescript, destructuring and chaining
-
 * Typescript Quiz ([external](https://www.w3schools.com/typescript/typescript_quiz.php))
 * [Unpacking data](Module-1/unpacking-data.md)
 
-## Module 2 - Promises, APIs and Testing with Jest
+## Module 2: Asynchronous JavaScript, APIs and Professional Development Practices
 
 * [Promises with XHR (and Ghibli Films)](Module-2/promises-with-xhr.md)
 * [Testing JavaScript with Jest](Module-2/testing-js-with-jest.md)
 
-## Module 3 - SPA, MPA, and PWAs, NodeJS and Express
+## Module 3: Web-applications (SPM vs MPA, PWAs) and Node.JS
 
 * [Building a Single Page Application with Vanilla JavaScript](Module-3/spa-vanilla-js-guide.md)
 * [Getting started with NodeJS](Module-3/nodejs.md)
 * [Getting started with Express](Module-3/expressjs.md)
 
-## Module 4 - Object-Oriented Programming vs Frunctional Programming
+## Module 4: Object-Oriented and Functional Programming
 
 * [Object oriented programming](Module-4/oop.md)
 * Ultra-shorts:
@@ -30,7 +27,7 @@ This is a repo with extra learning material for JavaScript 2 at Noroff
     * [Inheritance](Module-4/Ultra-shorts/Inheritance.md)
 * [Functional programming](Module-4/functional-programming.md)
 
-## Module 5 
+## Module 5: Performance, Security, and LLMs as a Development Tool
 
 * [Fast and Safe](Module-5/fast-and-safe.md)
 * [Say what you mean](Module-5/say-what-you-mean.md)
