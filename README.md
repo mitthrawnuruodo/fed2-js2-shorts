@@ -1,15 +1,15 @@
 # JavaScript 2
 
-This is a repo for making the extra learning material for JS2
+This is a repo with extra learning material for JavaScript 2 at Noroff
 
 ## Reptition/Kickstart
 
-* Getting Started with TypeScript
+* [Getting Started with TypeScript](Module-0/getting-started-with-typescript.md)
 
 ## Module 1 - Typescript, destructuring and chaining
 
 * Typescript Quiz ([external](https://www.w3schools.com/typescript/typescript_quiz.php))
-* Unpacking data
+* [Unpacking data](Module-1/unpacking-data.md)
 
 ## Module 2 - Promises, APIs and Testing with Jest
 
@@ -31,6 +31,7 @@ This is a repo for making the extra learning material for JS2
 
 ## Module 5 
 
-* Fast and Safe
-* Say what you mean
-* How to Succeed
+* [Fast and Safe](Module-5/fast-and-safe.md)
+* [Say what you mean](Module-5/say-what-you-mean.md)
+* Code Break ([external](https://suno.com/s/6JFrff5r8jcaDJCO))
+* [How to Succeed](Module-5/how-to-succeed.md)
