@@ -13,7 +13,7 @@ This is a repo with extra learning material for JavaScript 2 at Noroff
 
 ## Module 2 - Promises, APIs and Testing with Jest
 
-* [Promises with XHR (and Studio Ghible)](Module-2/promises-with-xhr.md)
+* [Promises with XHR (and Ghibli Films)](Module-2/promises-with-xhr.md)
 * [Testing JavaScript with Jest](Module-2/testing-js-with-jest.md)
 
 ## Module 3 - SPA, MPA, and PWAs, NodeJS and Express
