@@ -2,13 +2,18 @@
 
 This is a repo for making the extra learning material for JS2
 
+## Reptition/Kickstart
+
+* Getting Started with TypeScript
+
 ## Module 1 - Typescript, destructuring and chaining
 
-* Typescript Quiz
+* Typescript Quiz ([external](https://www.w3schools.com/typescript/typescript_quiz.php))
+* Unpacking data
 
 ## Module 2 - Promises, APIs and Testing with Jest
 
-* [Promises with XHR (and Amiibos)](Module-2/promises-with-xhr.md)
+* [Promises with XHR (and Studio Ghible)](Module-2/promises-with-xhr.md)
 * [Testing JavaScript with Jest](Module-2/testing-js-with-jest.md)
 
 ## Module 3 - SPA, MPA, and PWAs, NodeJS and Express
@@ -26,4 +31,6 @@ This is a repo for making the extra learning material for JS2
 
 ## Module 5 
 
-* TBD
+* Fast and Safe
+* Say what you mean
+* How to Succeed
