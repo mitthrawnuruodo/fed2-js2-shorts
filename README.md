@@ -21,6 +21,7 @@ Some of these go over the same ground as the regular Moodle lessons from a diffe
 | --- | --- | --- |
 | [Promises with XHR (and Ghibli Films)](Module-2/promises-with-xhr.md) | Lessons 2.1 and 2.2 | What a promise really is, by wrapping the old `XMLHttpRequest` in one to build a simple `fetch` of your own. |
 | [Testing JavaScript with Jest](Module-2/testing-js-with-jest.md) | Lesson 2.3 | Setting up Jest with ES modules, writing your first tests, separating logic from side effects, and mocking `fetch`. |
+| [It works on my machine](Module-2/it-works-on-my-machine.md) | Lesson 2.4 | Getting from `localhost` to a public URL: five small projects deployed to Netlify and Vercel, with and without a build step, and keeping an API key out of the browser. |
 
 ## Module 3: Web applications (SPA vs MPA, PWAs) and Node.js
 
