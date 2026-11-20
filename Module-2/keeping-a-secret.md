@@ -50,7 +50,7 @@ If the install fails with a permission error (`EACCES`), don't reach for `sudo`.
 
 The CLI can do a lot (deploy, manage environment variables, link folders to projects), but in this lesson we only need one command from it: `netlify dev`, which runs your site *and* your functions on your own machine. Everything else we'll do through GitHub and the Netlify dashboard.
 
-If you've done *It works on my machine*, you already have most of this: the OpenWeatherMap key (the same one works here), a Netlify account and the Netlify CLI. You can skip straight to [The project](#the-project).
+If you've done [It works on my machine](it-works-on-my-machine.md), you already have most of this: the OpenWeatherMap key (the same one works here), a Netlify account and the Netlify CLI. You can skip straight to [The project](#the-project).
 
 ## The project
 
